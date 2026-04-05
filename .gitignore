@@ -1,0 +1,7 @@
+.env
+.env.local
+*.exe
+*.out
+.DS_Store
+.vscode/
+.idea/
