@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowGym</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>FlowGym</h1>
+        <p>Find an alternative exercise when your machine is occupied.</p>
+
+        <form id="recommendation-form">
+            <label for="exercise">Exercise name</label>
+            <input type="text" id="exercise" name="exercise" placeholder="Enter an exercise, e.g. Bench Press" required>
+            <button type="submit">Get Recommendation</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById("recommendation-form");
+        const resultDiv = document.getElementById("result");
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const exercise = document.getElementById("exercise").value.trim();
+
+            if (!exercise) {
+                resultDiv.innerHTML = "<p>Please enter an exercise name.</p>";
+                return;
+            }
+
+            try {
+                const response = await fetch(`/recommendation?exercise=${encodeURIComponent(exercise)}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    resultDiv.innerHTML = `<p>Error: ${data.message || "Could not get recommendation."}</p>`;
+                    return;
+                }
+
+                resultDiv.innerHTML = `
+                    <h2>Recommendation</h2>
+                    <p><strong>Requested Exercise:</strong> ${data.requested_exercise}</p>
+                    <p><strong>Recommended Exercise:</strong> ${data.recommended_exercise}</p>
+                    <p><strong>Muscle Group:</strong> ${data.muscle_group}</p>
+                    <p><strong>Machine:</strong> ${data.machine}</p>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = "<p>An error occurred while fetching the recommendation.</p>";
+            }
+        });
+    </script>
+</body>
+</html>
