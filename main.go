@@ -26,6 +26,7 @@ func main() {
 	fmt.Println("Database connected successfully")
 
 	http.HandleFunc("/health", handlers.HealthHandler)
+	http.HandleFunc("/recommendation", handlers.RecommendationHandler(db))
 
 	fmt.Println("Server running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
