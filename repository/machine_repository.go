@@ -102,3 +102,14 @@ func (r *MachineRepository) GetAvailableByExerciseID(exerciseID int) (*models.Ma
 
 	return &machine, nil
 }
+
+func (r *MachineRepository) UpdateAvailability(machineID int, isAvailable bool) error {
+	query := `
+		UPDATE machines
+		SET is_available = $1
+		WHERE id = $2
+	`
+
+	_, err := r.DB.Exec(query, isAvailable, machineID)
+	return err
+}
