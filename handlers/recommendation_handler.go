@@ -8,17 +8,29 @@ import (
 	"Flow_gym_go_project/services"
 )
 
+type ErrorResponse struct {
+	Message string `json:"message"`
+}
+
 func RecommendationHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		exerciseName := r.URL.Query().Get("exercise")
 		if exerciseName == "" {
-			http.Error(w, "missing exercise parameter", http.StatusBadRequest)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(ErrorResponse{
+				Message: "missing exercise parameter",
+			})
 			return
 		}
 
 		recommendation, err := services.GetRecommendation(db, exerciseName)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusNotFound)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusNotFound)
+			json.NewEncoder(w).Encode(ErrorResponse{
+				Message: err.Error(),
+			})
 			return
 		}
 

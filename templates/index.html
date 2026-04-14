@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlowGym</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 <body>
     <div class="container">
         <h1>FlowGym</h1>
@@ -30,7 +32,10 @@
             const exercise = document.getElementById("exercise").value.trim();
 
             if (!exercise) {
-                resultDiv.innerHTML = "<p>Please enter an exercise name.</p>";
+                resultDiv.innerHTML = `
+                    <h2>Recommendation</h2>
+                    <p>Please enter an exercise name.</p>
+                `;
                 return;
             }
 
@@ -39,7 +44,10 @@
                 const data = await response.json();
 
                 if (!response.ok) {
-                    resultDiv.innerHTML = `<p>Error: ${data.message || "Could not get recommendation."}</p>`;
+                    resultDiv.innerHTML = `
+                        <h2>Recommendation</h2>
+                        <p>${data.message || "Could not get recommendation."}</p>
+                    `;
                     return;
                 }
 
@@ -51,9 +59,13 @@
                     <p><strong>Machine:</strong> ${data.machine}</p>
                 `;
             } catch (error) {
-                resultDiv.innerHTML = "<p>An error occurred while fetching the recommendation.</p>";
+                resultDiv.innerHTML = `
+                    <h2>Recommendation</h2>
+                    <p>An unexpected error occurred while fetching the recommendation.</p>
+                `;
             }
         });
     </script>
 </body>
+
 </html>
