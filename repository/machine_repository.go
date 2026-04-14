@@ -78,3 +78,27 @@ func (r *MachineRepository) GetAvailable() ([]models.Machine, error) {
 
 	return machines, nil
 }
+
+func (r *MachineRepository) GetAvailableByExerciseID(exerciseID int) (*models.Machine, error) {
+	query := `
+		SELECT m.id, m.name, m.is_available
+		FROM machines m
+		JOIN exercise_machines em ON m.id = em.machine_id
+		WHERE em.exercise_id = $1
+		  AND m.is_available = true
+		ORDER BY m.id
+		LIMIT 1
+	`
+
+	var machine models.Machine
+	err := r.DB.QueryRow(query, exerciseID).Scan(
+		&machine.ID,
+		&machine.Name,
+		&machine.IsAvailable,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &machine, nil
+}

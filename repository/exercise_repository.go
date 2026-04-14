@@ -16,9 +16,10 @@ func NewExerciseRepository(db *sql.DB) *ExerciseRepository {
 
 func (r *ExerciseRepository) GetByName(name string) (*models.Exercise, error) {
 	query := `
-		SELECT id, name, muscle_group_id
-		FROM exercises
-		WHERE name = $1
+		SELECT e.id, e.name, e.muscle_group_id, mg.name
+		FROM exercises e
+		JOIN muscle_groups mg ON e.muscle_group_id = mg.id
+		WHERE e.name = $1
 	`
 
 	var exercise models.Exercise
@@ -26,6 +27,7 @@ func (r *ExerciseRepository) GetByName(name string) (*models.Exercise, error) {
 		&exercise.ID,
 		&exercise.Name,
 		&exercise.MuscleGroupID,
+		&exercise.MuscleGroupName,
 	)
 	if err != nil {
 		return nil, err
@@ -64,4 +66,27 @@ func (r *ExerciseRepository) GetAll() ([]models.Exercise, error) {
 	}
 
 	return exercises, nil
+}
+
+func (r *ExerciseRepository) GetAlternativeByMuscleGroup(muscleGroupID int, excludedExerciseID int) (*models.Exercise, error) {
+	query := `
+		SELECT e.id, e.name, e.muscle_group_id
+		FROM exercises e
+		WHERE e.muscle_group_id = $1
+		  AND e.id != $2
+		ORDER BY e.id
+		LIMIT 1
+	`
+
+	var exercise models.Exercise
+	err := r.DB.QueryRow(query, muscleGroupID, excludedExerciseID).Scan(
+		&exercise.ID,
+		&exercise.Name,
+		&exercise.MuscleGroupID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &exercise, nil
 }
