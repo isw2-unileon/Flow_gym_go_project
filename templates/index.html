@@ -9,22 +9,123 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1>FlowGym</h1>
-        <p>Find an alternative exercise when your machine is occupied.</p>
+    <div class="page-wrapper">
+        <header class="hero">
+            <h1>FlowGym</h1>
+            <p>Keep your workout flowing during busy gym hours.</p>
+        </header>
 
-        <form id="recommendation-form">
-            <label for="exercise">Exercise name</label>
-            <input type="text" id="exercise" name="exercise" placeholder="Enter an exercise, e.g. Bench Press" required>
-            <button type="submit">Get Recommendation</button>
-        </form>
+        <section class="top-panel">
+            <div class="recommendation-panel">
+                <h2>Exercise Recommendation</h2>
+                <form id="recommendation-form">
+                    <label for="exercise">Exercise name</label>
+                    <input type="text" id="exercise" name="exercise"
+                        placeholder="Enter an exercise, e.g. Bench Press" required>
+                    <button type="submit">Get Recommendation</button>
+                </form>
 
-        <div id="result" class="result"></div>
+                <div id="result" class="result"></div>
+            </div>
+        </section>
+
+        <section class="gym-section">
+            <div class="gym-header">
+                <h2>Gym Map</h2>
+                <p>Click on a machine to change its availability status.</p>
+            </div>
+
+            <div class="gym-legend">
+                <div class="legend-item">
+                    <span class="legend-color available"></span>
+                    <span>Available</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color occupied"></span>
+                    <span>Occupied</span>
+                </div>
+            </div>
+
+            <div id="gym-map" class="gym-map">
+                <div class="machine-slot" data-machine-name="Bench">
+                    <div class="machine-icon">🏋️</div>
+                    <div class="machine-name">Bench</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Cable Machine">
+                    <div class="machine-icon">💪</div>
+                    <div class="machine-name">Cable Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Lat Pulldown Machine">
+                    <div class="machine-icon">🔽</div>
+                    <div class="machine-name">Lat Pulldown Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Leg Press Machine">
+                    <div class="machine-icon">🦵</div>
+                    <div class="machine-name">Leg Press Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Dumbbells">
+                    <div class="machine-icon">🏋️</div>
+                    <div class="machine-name">Dumbbells</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Shoulder Press Machine">
+                    <div class="machine-icon">💪</div>
+                    <div class="machine-name">Shoulder Press Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Incline Bench">
+                    <div class="machine-icon">🏋️</div>
+                    <div class="machine-name">Incline Bench</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Seated Row Machine">
+                    <div class="machine-icon">🚣</div>
+                    <div class="machine-name">Seated Row Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Leg Extension Machine">
+                    <div class="machine-icon">🦵</div>
+                    <div class="machine-name">Leg Extension Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Pec Deck">
+                    <div class="machine-icon">💪</div>
+                    <div class="machine-name">Pec Deck</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Smith Machine">
+                    <div class="machine-icon">🏋️</div>
+                    <div class="machine-name">Smith Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Treadmill">
+                    <div class="machine-icon">🏃</div>
+                    <div class="machine-name">Treadmill</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script>
         const form = document.getElementById("recommendation-form");
         const resultDiv = document.getElementById("result");
+        const machineSlots = document.querySelectorAll(".machine-slot");
 
         form.addEventListener("submit", async function (event) {
             event.preventDefault();
@@ -65,6 +166,72 @@
                 `;
             }
         });
+
+        async function loadMachines() {
+            try {
+                const response = await fetch("/machines");
+                const machines = await response.json();
+
+                machineSlots.forEach(slot => {
+                    slot.classList.remove("available", "occupied");
+
+                    const machineName = slot.dataset.machineName;
+                    const machine = machines.find(m => m.name === machineName);
+
+                    const statusText = slot.querySelector(".machine-status");
+                    if (statusText) statusText.textContent = "Unknown";
+
+                    if (machine) {
+                        slot.dataset.machineId = machine.id;
+                        slot.dataset.available = machine.is_available;
+
+                        if (machine.is_available) {
+                            slot.classList.add("available");
+                            if (statusText) statusText.textContent = "Available";
+                        } else {
+                            slot.classList.add("occupied");
+                            if (statusText) statusText.textContent = "Occupied";
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Could not load machines:", error);
+            }
+        }
+
+        async function toggleMachineAvailability(machineId, currentAvailability) {
+            try {
+                const newAvailability = !currentAvailability;
+
+                const response = await fetch(
+                    `/machines/update-availability?id=${machineId}&available=${newAvailability}`
+                );
+
+                if (!response.ok) {
+                    console.error("Could not update machine availability");
+                    return;
+                }
+
+                await loadMachines();
+            } catch (error) {
+                console.error("Error updating machine availability:", error);
+            }
+        }
+
+        machineSlots.forEach(slot => {
+            slot.addEventListener("click", async function () {
+                const machineId = this.dataset.machineId;
+                const currentAvailability = this.dataset.available === "true";
+
+                if (!machineId) {
+                    return;
+                }
+
+                await toggleMachineAvailability(machineId, currentAvailability);
+            });
+        });
+
+        loadMachines();
     </script>
 </body>
 

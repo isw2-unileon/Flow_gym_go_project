@@ -3,18 +3,42 @@ body {
     background-color: #f4f6f8;
     margin: 0;
     padding: 0;
+    color: #1f2937;
 }
 
-.container {
-    max-width: 700px;
-    margin: 60px auto;
+.page-wrapper {
+    width: min(1400px, 95%);
+    margin: 0 auto;
+    padding: 30px 0 50px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #4b5563;
+}
+
+.top-panel {
+    margin-bottom: 30px;
+}
+
+.recommendation-panel {
     background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
-h1 {
+.recommendation-panel h2 {
     margin-top: 0;
 }
 
@@ -26,19 +50,221 @@ form {
 }
 
 input {
-    padding: 10px;
+    padding: 12px;
     font-size: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
 }
 
 button {
-    padding: 10px;
+    padding: 12px;
     font-size: 16px;
     cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #38bdf8;
+    color: white;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #0ea5e9;
 }
 
 .result {
-    margin-top: 25px;
-    padding: 15px;
-    background-color: #f0f7ff;
-    border-radius: 8px;
+    margin-top: 20px;
+    padding: 18px;
+    background-color: #eff6ff;
+    border-radius: 10px;
+    min-height: 70px;
+}
+
+.gym-section {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.gym-header {
+    margin-bottom: 20px;
+}
+
+.gym-header h2 {
+    margin-bottom: 8px;
+}
+
+.gym-header p {
+    margin: 0;
+    color: #4b5563;
+}
+
+.gym-map {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    background-color: #f9fafb;
+    border: 4px solid #1f2937;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.machine-slot {
+    position: absolute;
+    width: 180px;
+    min-height: 70px;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: bold;
+    border: 2px solid #cbd5e1;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-sizing: border-box;
+}
+
+.machine-slot:hover {
+    transform: scale(1.03);
+}
+
+.machine-slot.available {
+    background-color: #dcfce7;
+    border-color: #22c55e;
+}
+
+.machine-slot.occupied {
+    background-color: #fee2e2;
+    border-color: #ef4444;
+}
+
+.machine-slot[data-machine-name="Bench"] {
+    top: 45px;
+    left: 40px;
+}
+
+.machine-slot[data-machine-name="Cable Machine"] {
+    top: 45px;
+    left: 260px;
+}
+
+.machine-slot[data-machine-name="Incline Bench"] {
+    top: 45px;
+    left: 500px;
+}
+
+.machine-slot[data-machine-name="Lat Pulldown Machine"] {
+    top: 45px;
+    right: 40px;
+}
+
+.machine-slot[data-machine-name="Pec Deck"] {
+    top: 150px;
+    left: 150px;
+}
+
+.machine-slot[data-machine-name="Seated Row Machine"] {
+    top: 150px;
+    right: 150px;
+}
+
+.machine-slot[data-machine-name="Leg Extension Machine"] {
+    top: 260px;
+    left: 150px;
+}
+
+.machine-slot[data-machine-name="Smith Machine"] {
+    top: 260px;
+    right: 150px;
+}
+
+.machine-slot[data-machine-name="Treadmill"] {
+    top: 235px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.machine-slot[data-machine-name="Treadmill"]:hover {
+    transform: translateX(-50%) scale(1.03);
+}
+
+.machine-slot[data-machine-name="Leg Press Machine"] {
+    bottom: 40px;
+    left: 70px;
+}
+
+.machine-slot[data-machine-name="Dumbbells"] {
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.machine-slot[data-machine-name="Dumbbells"]:hover {
+    transform: translateX(-50%) scale(1.03);
+}
+
+.machine-slot[data-machine-name="Shoulder Press Machine"] {
+    bottom: 40px;
+    right: 70px;
+}
+
+.gym-legend {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.legend-color {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    display: inline-block;
+    border: 1px solid #999;
+}
+
+.legend-color.available {
+    background-color: #dcfce7;
+    border-color: #22c55e;
+}
+
+.legend-color.occupied {
+    background-color: #fee2e2;
+    border-color: #ef4444;
+}
+
+.machine-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.machine-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.machine-name {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.machine-status {
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0.85;
 }
