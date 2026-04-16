@@ -20,31 +20,30 @@ func GetRecommendation(db *sql.DB, exerciseName string) (*models.Recommendation,
 		return nil, err
 	}
 
-	alternativeExercise, err := exerciseRepo.GetAlternativeByMuscleGroup(
+	alternativeExercises, err := exerciseRepo.GetAlternativesByMuscleGroup(
 		requestedExercise.MuscleGroupID,
 		requestedExercise.ID,
 	)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("no alternative recommendation found")
-		}
 		return nil, err
 	}
 
-	machine, err := machineRepo.GetAvailableByExerciseID(alternativeExercise.ID)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("no available machine found for alternative exercise")
+	for _, alternativeExercise := range alternativeExercises {
+		machine, err := machineRepo.GetAvailableByExerciseID(alternativeExercise.ID)
+		if err == nil {
+			recommendation := &models.Recommendation{
+				RequestedExercise:   requestedExercise.Name,
+				RecommendedExercise: alternativeExercise.Name,
+				MuscleGroup:         requestedExercise.MuscleGroupName,
+				Machine:             machine.Name,
+			}
+			return recommendation, nil
 		}
-		return nil, err
+
+		if err != sql.ErrNoRows {
+			return nil, err
+		}
 	}
 
-	recommendation := &models.Recommendation{
-		RequestedExercise:   requestedExercise.Name,
-		RecommendedExercise: alternativeExercise.Name,
-		MuscleGroup:         requestedExercise.MuscleGroupName,
-		Machine:             machine.Name,
-	}
-
-	return recommendation, nil
+	return nil, fmt.Errorf("no available recommendation found for this muscle group")
 }

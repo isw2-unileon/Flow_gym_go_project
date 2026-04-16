@@ -68,25 +68,36 @@ func (r *ExerciseRepository) GetAll() ([]models.Exercise, error) {
 	return exercises, nil
 }
 
-func (r *ExerciseRepository) GetAlternativeByMuscleGroup(muscleGroupID int, excludedExerciseID int) (*models.Exercise, error) {
+func (r *ExerciseRepository) GetAlternativesByMuscleGroup(muscleGroupID int, excludedExerciseID int) ([]models.Exercise, error) {
 	query := `
 		SELECT e.id, e.name, e.muscle_group_id
 		FROM exercises e
 		WHERE e.muscle_group_id = $1
 		  AND e.id != $2
 		ORDER BY e.id
-		LIMIT 1
 	`
 
-	var exercise models.Exercise
-	err := r.DB.QueryRow(query, muscleGroupID, excludedExerciseID).Scan(
-		&exercise.ID,
-		&exercise.Name,
-		&exercise.MuscleGroupID,
-	)
+	rows, err := r.DB.Query(query, muscleGroupID, excludedExerciseID)
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
-	return &exercise, nil
+	var exercises []models.Exercise
+
+	for rows.Next() {
+		var exercise models.Exercise
+		err := rows.Scan(
+			&exercise.ID,
+			&exercise.Name,
+			&exercise.MuscleGroupID,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		exercises = append(exercises, exercise)
+	}
+
+	return exercises, nil
 }

@@ -20,8 +20,9 @@
                 <h2>Exercise Recommendation</h2>
                 <form id="recommendation-form">
                     <label for="exercise">Exercise name</label>
-                    <input type="text" id="exercise" name="exercise"
+                    <input type="text" id="exercise" name="exercise" list="exercise-options"
                         placeholder="Enter an exercise, e.g. Bench Press" required>
+                    <datalist id="exercise-options"></datalist>
                     <button type="submit">Get Recommendation</button>
                 </form>
 
@@ -126,6 +127,7 @@
         const form = document.getElementById("recommendation-form");
         const resultDiv = document.getElementById("result");
         const machineSlots = document.querySelectorAll(".machine-slot");
+        const exerciseOptions = document.getElementById("exercise-options");
 
         form.addEventListener("submit", async function (event) {
             event.preventDefault();
@@ -231,7 +233,26 @@
             });
         });
 
+        async function loadExercises() {
+            try {
+                const response = await fetch("/exercises");
+                const exercises = await response.json();
+
+                exerciseOptions.innerHTML = "";
+
+                exercises.forEach(exercise => {
+                    const option = document.createElement("option");
+                    option.value = exercise.name;
+                    exerciseOptions.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Could not load exercises:", error);
+            }
+        }
+
         loadMachines();
+        loadExercises();
+        
     </script>
 </body>
 
