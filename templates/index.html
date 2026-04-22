@@ -11,6 +11,7 @@
 <body>
     <div class="page-wrapper">
         <header class="hero">
+
             <h1>FlowGym</h1>
             <p class="hero-subtitle">Keep your workout flowing during busy gym hours.</p>
         </header>
@@ -26,7 +27,7 @@
                     <button type="submit">Get Recommendation</button>
                 </form>
 
-                <div id="result" class="result"></div>
+                <div id="result" class="result result-neutral"></div>
             </div>
         </section>
 
@@ -129,12 +130,25 @@
         const machineSlots = document.querySelectorAll(".machine-slot");
         const exerciseOptions = document.getElementById("exercise-options");
 
+        function setResultState(state) {
+            resultDiv.className = "result";
+
+            if (state === "success") {
+                resultDiv.classList.add("result-success");
+            } else if (state === "error") {
+                resultDiv.classList.add("result-error");
+            } else {
+                resultDiv.classList.add("result-neutral");
+            }
+        }
         form.addEventListener("submit", async function (event) {
             event.preventDefault();
 
             const exercise = document.getElementById("exercise").value.trim();
+            setResultState("neutral");
 
             if (!exercise) {
+                setResultState("error");
                 resultDiv.innerHTML = `
                     <h2>Recommendation</h2>
                     <p>Please enter an exercise name.</p>
@@ -147,6 +161,7 @@
                 const data = await response.json();
 
                 if (!response.ok) {
+                    setResultState("error");
                     resultDiv.innerHTML = `
                         <h2>Recommendation</h2>
                         <p>${data.message || "Could not get recommendation."}</p>
@@ -154,6 +169,7 @@
                     return;
                 }
 
+                setResultState("success");
                 resultDiv.innerHTML = `
                     <h2>Recommendation</h2>
                     <p><strong>Requested Exercise:</strong> ${data.requested_exercise}</p>
@@ -162,6 +178,7 @@
                     <p><strong>Machine:</strong> ${data.machine}</p>
                 `;
             } catch (error) {
+                setResultState("error");
                 resultDiv.innerHTML = `
                     <h2>Recommendation</h2>
                     <p>An unexpected error occurred while fetching the recommendation.</p>

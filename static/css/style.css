@@ -105,18 +105,51 @@ button:hover {
 .result {
     margin-top: 18px;
     padding: 20px;
-    background-color: #eff6ff;
-    border: 1px solid #dbeafe;
     border-radius: 12px;
     min-height: 80px;
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.result-neutral {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.result-success {
+    background-color: #bbf7d0;
+    border-color: #22c55e;
+}
+
+.result-error {
+    background-color: #fecaca;
+    border-color: #ef4444;
 }
 
 .result h2 {
     margin-top: 0;
     margin-bottom: 12px;
+}
+
+.result-neutral h2 {
     color: #1e3a8a;
 }
 
+.result-success h2 {
+    color: #166534;
+}
+
+.result-error h2 {
+    color: #991b1b;
+}
+
+.result-success p {
+    color: #14532d;
+}
+
+.result-error p {
+    color: #7f1d1d;
+}
 .result p {
     margin: 8px 0;
     line-height: 1.5;
