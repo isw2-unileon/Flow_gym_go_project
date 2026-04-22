@@ -22,3 +22,27 @@ func GetExercisesHandler(db *sql.DB) http.HandlerFunc {
 		json.NewEncoder(w).Encode(exercises)
 	}
 }
+
+func GetExerciseByNameHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		name := r.URL.Query().Get("name")
+		if name == "" {
+			http.Error(w, "missing exercise name", http.StatusBadRequest)
+			return
+		}
+
+		exerciseRepo := repository.NewExerciseRepository(db)
+		exercise, err := exerciseRepo.GetByName(name)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				http.Error(w, "exercise not found", http.StatusNotFound)
+				return
+			}
+			http.Error(w, "could not fetch exercise", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(exercise)
+	}
+}
