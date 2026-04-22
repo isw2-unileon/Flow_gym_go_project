@@ -328,3 +328,68 @@ button:hover {
     bottom: 30px;
     right: 50px;
 }
+
+.machine-summary {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin: 10px auto 36px;
+}
+
+.summary-card {
+    width: 250px;
+    min-height: 110px;
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 18px;
+    border: 1px solid #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.summary-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #475569;
+}
+
+.summary-count {
+    font-size: 30px;
+    font-weight: bold;
+    color: #0f172a;
+}
+
+.summary-list-text {
+    font-size: 14px;
+    color: #1f2937;
+    line-height: 1.5;
+}
+
+.summary-available {
+    background-color: #dcfce7;
+    border-color: #86efac;
+}
+
+.summary-occupied {
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+}
+
+.summary-list {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+    width: 320px;
+}
+
+@media (max-width: 900px) {
+    .machine-summary {
+        grid-template-columns: 1fr;
+    }
+}

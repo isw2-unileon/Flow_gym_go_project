@@ -37,6 +37,23 @@
                 <p>Click on a machine to change its availability status.</p>
             </div>
 
+            <div class="machine-summary">
+                <div class="summary-card summary-available">
+                    <span class="summary-title">Available Machines</span>
+                    <span id="available-count" class="summary-count">0</span>
+                </div>
+
+                <div class="summary-card summary-occupied">
+                    <span class="summary-title">Occupied Machines</span>
+                    <span id="occupied-count" class="summary-count">0</span>
+                </div>
+
+                <div class="summary-card summary-list">
+                    <span class="summary-title">Available Now</span>
+                    <span id="available-list" class="summary-list-text">No machines available</span>
+                </div>
+            </div>
+
             <div class="gym-legend">
                 <div class="legend-item">
                     <span class="legend-color available"></span>
@@ -129,6 +146,9 @@
         const resultDiv = document.getElementById("result");
         const machineSlots = document.querySelectorAll(".machine-slot");
         const exerciseOptions = document.getElementById("exercise-options");
+        const availableCount = document.getElementById("available-count");
+        const occupiedCount = document.getElementById("occupied-count");
+        const availableList = document.getElementById("available-list");
 
         function setResultState(state) {
             resultDiv.className = "result";
@@ -190,6 +210,17 @@
             try {
                 const response = await fetch("/machines");
                 const machines = await response.json();
+                const availableMachines = machines.filter(machine => machine.is_available);
+                const occupiedMachines = machines.filter(machine => !machine.is_available);
+
+                availableCount.textContent = availableMachines.length;
+                occupiedCount.textContent = occupiedMachines.length;
+
+                if (availableMachines.length > 0) {
+                    availableList.textContent = availableMachines.map(machine => machine.name).join(", ");
+                } else {
+                    availableList.textContent = "No machines available";
+                }
 
                 machineSlots.forEach(slot => {
                     slot.classList.remove("available", "occupied");
