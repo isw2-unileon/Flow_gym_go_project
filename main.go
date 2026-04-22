@@ -42,6 +42,7 @@ func main() {
 	http.HandleFunc("/machines/update-availability", handlers.UpdateMachineAvailabilityHandler(db))
 	http.HandleFunc("/exercises", handlers.GetExercisesHandler(db))
 	http.HandleFunc("/machines", handlers.GetMachinesHandler(db))
+	http.HandleFunc("/machines/available", handlers.GetAvailableMachinesHandler(db))
 
 	fmt.Println("Server running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))

@@ -57,3 +57,18 @@ func GetMachinesHandler(db *sql.DB) http.HandlerFunc {
 		json.NewEncoder(w).Encode(machines)
 	}
 }
+
+func GetAvailableMachinesHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		machineRepo := repository.NewMachineRepository(db)
+
+		machines, err := machineRepo.GetAvailable()
+		if err != nil {
+			http.Error(w, "could not fetch available machines", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(machines)
+	}
+}
