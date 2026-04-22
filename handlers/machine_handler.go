@@ -72,3 +72,36 @@ func GetAvailableMachinesHandler(db *sql.DB) http.HandlerFunc {
 		json.NewEncoder(w).Encode(machines)
 	}
 }
+
+type UpdateMachineAvailabilityRequest struct {
+	ID        int  `json:"id"`
+	Available bool `json:"available"`
+}
+
+func UpdateMachineAvailabilityPostHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		var req UpdateMachineAvailabilityRequest
+		err := json.NewDecoder(r.Body).Decode(&req)
+		if err != nil {
+			http.Error(w, "invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		machineRepo := repository.NewMachineRepository(db)
+		err = machineRepo.UpdateAvailability(req.ID, req.Available)
+		if err != nil {
+			http.Error(w, "could not update machine availability", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{
+			"message": "Machine availability updated successfully",
+		})
+	}
+}
