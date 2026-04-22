@@ -105,3 +105,33 @@ func UpdateMachineAvailabilityPostHandler(db *sql.DB) http.HandlerFunc {
 		})
 	}
 }
+
+func GetMachineByIDHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		idParam := r.URL.Query().Get("id")
+		if idParam == "" {
+			http.Error(w, "missing machine id", http.StatusBadRequest)
+			return
+		}
+
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			http.Error(w, "invalid machine id", http.StatusBadRequest)
+			return
+		}
+
+		machineRepo := repository.NewMachineRepository(db)
+		machine, err := machineRepo.GetByID(id)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				http.Error(w, "machine not found", http.StatusNotFound)
+				return
+			}
+			http.Error(w, "could not fetch machine", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(machine)
+	}
+}

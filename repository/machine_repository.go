@@ -113,3 +113,23 @@ func (r *MachineRepository) UpdateAvailability(machineID int, isAvailable bool) 
 	_, err := r.DB.Exec(query, isAvailable, machineID)
 	return err
 }
+
+func (r *MachineRepository) GetByID(id int) (*models.Machine, error) {
+	query := `
+		SELECT id, name, is_available
+		FROM machines
+		WHERE id = $1
+	`
+
+	var machine models.Machine
+	err := r.DB.QueryRow(query, id).Scan(
+		&machine.ID,
+		&machine.Name,
+		&machine.IsAvailable,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &machine, nil
+}
