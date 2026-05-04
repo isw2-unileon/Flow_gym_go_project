@@ -6,6 +6,12 @@ The goal of FlowGym is to reduce waiting times, improve workout efficiency, and 
 
 ---
 
+## Live Demo
+
+The application is deployed and available at:
+
+https://flow-gym-go-project.onrender.com
+
 # Features
 
 - Exercise recommendation system based on muscle group
