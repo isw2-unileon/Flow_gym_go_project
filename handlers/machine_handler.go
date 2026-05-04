@@ -49,7 +49,7 @@ func GetMachinesHandler(db *sql.DB) http.HandlerFunc {
 
 		machines, err := machineRepo.GetAll()
 		if err != nil {
-			http.Error(w, "could not fetch machines", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 

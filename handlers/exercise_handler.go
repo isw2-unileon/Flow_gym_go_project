@@ -14,7 +14,7 @@ func GetExercisesHandler(db *sql.DB) http.HandlerFunc {
 
 		exercises, err := exerciseRepo.GetAll()
 		if err != nil {
-			http.Error(w, "could not fetch exercises", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
