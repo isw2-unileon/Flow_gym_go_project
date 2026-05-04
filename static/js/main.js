@@ -99,9 +99,16 @@ async function toggleMachineAvailability(machineId, currentAvailability) {
     try {
         const newAvailability = !currentAvailability;
 
-        const response = await fetch(
-            `/machines/update-availability?id=${machineId}&available=${newAvailability}`
-        );
+        const response = await fetch("/machines/update-availability-post", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: Number(machineId),
+                available: newAvailability
+            })
+        });
 
         if (!response.ok) {
             console.error("Could not update machine availability");

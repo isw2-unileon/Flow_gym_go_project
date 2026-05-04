@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	"Flow_gym_go_project/database"
 	"Flow_gym_go_project/handlers"
@@ -47,6 +48,11 @@ func main() {
 	http.HandleFunc("/machine", handlers.GetMachineByIDHandler(db))
 	http.HandleFunc("/exercise", handlers.GetExerciseByNameHandler(db))
 
-	fmt.Println("Server running on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	fmt.Println("Server running on port " + port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

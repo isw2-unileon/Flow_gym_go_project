@@ -79,6 +79,44 @@ Run the SQL file to create the required tables:
 
 ---
 
+## API Endpoints
+
+### Health
+- `GET /health`  
+  Checks if the server is running.
+
+### Recommendations
+- `GET /recommendation?exercise=Bench%20Press`  
+  Returns an alternative exercise recommendation based on machine availability.
+
+### Exercises
+- `GET /exercises`  
+  Returns all exercises.
+
+- `GET /exercise?name=Bench%20Press`  
+  Returns a specific exercise by name.
+
+### Machines
+- `GET /machines`  
+  Returns all machines.
+
+- `GET /machines/available`  
+  Returns only available machines.
+
+- `GET /machine?id=2`  
+  Returns a specific machine by ID.
+
+- `POST /machines/update-availability-post`  
+  Updates a machine availability status.
+
+Example body:
+
+```json
+{
+  "id": 2,
+  "available": false
+}
+
 # Project Structure
 
 ```
@@ -115,6 +153,8 @@ Flow_gym_go_project/
 └── static/
     └── css/
         └── style.css
+    └── js/
+        └── main.js
 ```
 
 ---
