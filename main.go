@@ -55,4 +55,17 @@ func main() {
 
 	fmt.Println("Server running on port " + port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
+
+	http.HandleFunc("/debug-db", func(w http.ResponseWriter, r *http.Request) {
+	var databaseName string
+	var currentUser string
+
+	err := db.QueryRow("SELECT current_database(), current_user").Scan(&databaseName, &currentUser)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(w, "database=%s user=%s", databaseName, currentUser)
+})
 }
