@@ -38,7 +38,7 @@ func GetExerciseByNameHandler(db *sql.DB) http.HandlerFunc {
 				http.Error(w, "exercise not found", http.StatusNotFound)
 				return
 			}
-			http.Error(w, "could not fetch exercise", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 

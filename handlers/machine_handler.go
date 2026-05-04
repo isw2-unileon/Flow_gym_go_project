@@ -64,7 +64,7 @@ func GetAvailableMachinesHandler(db *sql.DB) http.HandlerFunc {
 
 		machines, err := machineRepo.GetAvailable()
 		if err != nil {
-			http.Error(w, "could not fetch available machines", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
