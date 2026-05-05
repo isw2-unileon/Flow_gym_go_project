@@ -6,6 +6,7 @@ const availableCount = document.getElementById("available-count");
 const occupiedCount = document.getElementById("occupied-count");
 const availableList = document.getElementById("available-list");
 const logoutButton = document.getElementById("logout-button");
+const currentUserSpan = document.getElementById("current-user");
 
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -152,8 +153,6 @@ async function loadExercises() {
     }
 }
 
-loadMachines();
-loadExercises();
 
 if (logoutButton) {
     logoutButton.addEventListener("click", async function () {
@@ -173,3 +172,29 @@ if (logoutButton) {
         }
     });
 }
+
+async function loadCurrentUser() {
+    if (!currentUserSpan) {
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/me");
+
+        if (!response.ok) {
+            window.location.href = "/login";
+            return;
+        }
+
+        const user = await response.json();
+
+        currentUserSpan.textContent = `Logged in as ${user.name} · ${user.role}`;
+    } catch (error) {
+        console.error("Could not load current user:", error);
+        window.location.href = "/login";
+    }
+}
+
+loadMachines();
+loadExercises();
+loadCurrentUser();
