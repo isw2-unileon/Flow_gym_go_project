@@ -47,6 +47,10 @@ func main() {
 	http.HandleFunc("/machines/update-availability-post", handlers.UpdateMachineAvailabilityPostHandler(db))
 	http.HandleFunc("/machine", handlers.GetMachineByIDHandler(db))
 	http.HandleFunc("/exercise", handlers.GetExerciseByNameHandler(db))
+	http.HandleFunc("/register", handlers.RegisterHandler(db))
+	http.HandleFunc("/login", handlers.LoginHandler(db))
+	http.HandleFunc("/logout", handlers.LogoutHandler())
+	http.HandleFunc("/me", handlers.MeHandler(db))
 
 	port := os.Getenv("PORT")
 	if port == "" {
