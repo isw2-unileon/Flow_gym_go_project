@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - FlowGym</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <h1>FlowGym</h1>
+            <h2>Create account</h2>
+
+            <form id="register-form">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                <button type="submit">Register</button>
+            </form>
+
+            <div id="register-result" class="auth-message"></div>
+
+            <p class="auth-link">
+                Already have an account?
+                <a href="/login">Login here</a>
+            </p>
+
+            <p class="auth-link">
+                <a href="/">Back to home</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById("register-form");
+        const registerResult = document.getElementById("register-result");
+
+        registerForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            try {
+                const response = await fetch("/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                if (!response.ok) {
+                    registerResult.textContent = "Could not create account.";
+                    return;
+                }
+
+                window.location.href = "/login";
+            } catch (error) {
+                registerResult.textContent = "Unexpected error during registration.";
+            }
+        });
+    </script>
+</body>
+
+</html>

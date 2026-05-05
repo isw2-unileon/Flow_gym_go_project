@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FlowGym</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <h1>FlowGym</h1>
+            <h2>Login</h2>
+
+            <form id="login-form">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <div id="login-result" class="auth-message"></div>
+
+            <p class="auth-link">
+                Don't have an account?
+                <a href="/register">Register here</a>
+            </p>
+
+            <p class="auth-link">
+                <a href="/">Back to home</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById("login-form");
+        const loginResult = document.getElementById("login-result");
+
+        loginForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            try {
+                const response = await fetch("/api/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                if (!response.ok) {
+                    loginResult.textContent = "Invalid email or password.";
+                    return;
+                }
+
+                window.location.href = "/app";
+            } catch (error) {
+                loginResult.textContent = "Unexpected error during login.";
+            }
+        });
+    </script>
+</body>
+
+</html>

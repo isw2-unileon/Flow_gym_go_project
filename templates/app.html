@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowGym</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="hero">
+
+            <h1>FlowGym</h1>
+            <p class="hero-subtitle">Keep your workout flowing during busy gym hours.</p>
+            <button id="logout-button" class="logout-button">Logout</button>
+        </header>
+
+        <section class="top-panel">
+            <div class="recommendation-panel">
+                <h2>Exercise Recommendation</h2>
+                <form id="recommendation-form">
+                    <label for="exercise">Exercise name</label>
+                    <input type="text" id="exercise" name="exercise" list="exercise-options"
+                        placeholder="Enter an exercise, e.g. Bench Press" required>
+                    <datalist id="exercise-options"></datalist>
+                    <button type="submit">Get Recommendation</button>
+                </form>
+
+                <div id="result" class="result result-neutral"></div>
+            </div>
+        </section>
+
+        <section class="gym-section">
+            <div class="gym-header">
+                <h2>Gym Map</h2>
+                <p>Click on a machine to change its availability status.</p>
+            </div>
+
+            <div class="machine-summary">
+                <div class="summary-card summary-available">
+                    <span class="summary-title">Available Machines</span>
+                    <span id="available-count" class="summary-count">0</span>
+                </div>
+
+                <div class="summary-card summary-occupied">
+                    <span class="summary-title">Occupied Machines</span>
+                    <span id="occupied-count" class="summary-count">0</span>
+                </div>
+
+                <div class="summary-card summary-list">
+                    <span class="summary-title">Available Now</span>
+                    <span id="available-list" class="summary-list-text">No machines available</span>
+                </div>
+            </div>
+
+            <div class="gym-legend">
+                <div class="legend-item">
+                    <span class="legend-color available"></span>
+                    <span>Available</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color occupied"></span>
+                    <span>Occupied</span>
+                </div>
+            </div>
+
+            <div id="gym-map" class="gym-map">
+                <div class="machine-slot" data-machine-name="Bench">
+                    <div class="machine-icon">🏋️</div>
+                    <div class="machine-name">Bench</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Cable Machine">
+                    <div class="machine-icon">💪</div>
+                    <div class="machine-name">Cable Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Lat Pulldown Machine">
+                    <div class="machine-icon">🔽</div>
+                    <div class="machine-name">Lat Pulldown Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Leg Press Machine">
+                    <div class="machine-icon">🦵</div>
+                    <div class="machine-name">Leg Press Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Dumbbells">
+                    <div class="machine-icon">🏋️</div>
+                    <div class="machine-name">Dumbbells</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Shoulder Press Machine">
+                    <div class="machine-icon">💪</div>
+                    <div class="machine-name">Shoulder Press Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Incline Bench">
+                    <div class="machine-icon">🏋️</div>
+                    <div class="machine-name">Incline Bench</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Seated Row Machine">
+                    <div class="machine-icon">🚣</div>
+                    <div class="machine-name">Seated Row Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Leg Extension Machine">
+                    <div class="machine-icon">🦵</div>
+                    <div class="machine-name">Leg Extension Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Pec Deck">
+                    <div class="machine-icon">💪</div>
+                    <div class="machine-name">Pec Deck</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Smith Machine">
+                    <div class="machine-icon">🏋️</div>
+                    <div class="machine-name">Smith Machine</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+
+                <div class="machine-slot" data-machine-name="Treadmill">
+                    <div class="machine-icon">🏃</div>
+                    <div class="machine-name">Treadmill</div>
+                    <div class="machine-status">Unknown</div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="/static/js/main.js"></script>
+</body>
+
+</html>

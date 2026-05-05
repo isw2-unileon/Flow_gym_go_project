@@ -38,6 +38,40 @@ func main() {
 		tmpl.Execute(w, nil)
 	})
 
+	http.HandleFunc("/app", func(w http.ResponseWriter, r *http.Request) {
+		cookie, err := r.Cookie("user_id")
+		if err != nil || cookie.Value == "" {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+
+		tmpl, err := template.ParseFiles("templates/app.html")
+		if err != nil {
+			http.Error(w, "Could not load app page", http.StatusInternalServerError)
+			return
+		}
+
+		tmpl.Execute(w, nil)
+	})
+
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("templates/login.html")
+		if err != nil {
+			http.Error(w, "Could not load login page", http.StatusInternalServerError)
+			return
+		}
+		tmpl.Execute(w, nil)
+	})
+
+	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("templates/register.html")
+		if err != nil {
+			http.Error(w, "Could not load register page", http.StatusInternalServerError)
+			return
+		}
+		tmpl.Execute(w, nil)
+	})
+
 	http.HandleFunc("/health", handlers.HealthHandler)
 	http.HandleFunc("/recommendation", handlers.RecommendationHandler(db))
 	http.HandleFunc("/machines/update-availability", handlers.UpdateMachineAvailabilityHandler(db))
@@ -47,10 +81,10 @@ func main() {
 	http.HandleFunc("/machines/update-availability-post", handlers.UpdateMachineAvailabilityPostHandler(db))
 	http.HandleFunc("/machine", handlers.GetMachineByIDHandler(db))
 	http.HandleFunc("/exercise", handlers.GetExerciseByNameHandler(db))
-	http.HandleFunc("/register", handlers.RegisterHandler(db))
-	http.HandleFunc("/login", handlers.LoginHandler(db))
-	http.HandleFunc("/logout", handlers.LogoutHandler())
-	http.HandleFunc("/me", handlers.MeHandler(db))
+	http.HandleFunc("/api/register", handlers.RegisterHandler(db))
+	http.HandleFunc("/api/login", handlers.LoginHandler(db))
+	http.HandleFunc("/api/logout", handlers.LogoutHandler())
+	http.HandleFunc("/api/me", handlers.MeHandler(db))
 
 	port := os.Getenv("PORT")
 	if port == "" {

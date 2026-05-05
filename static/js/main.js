@@ -5,6 +5,7 @@ const exerciseOptions = document.getElementById("exercise-options");
 const availableCount = document.getElementById("available-count");
 const occupiedCount = document.getElementById("occupied-count");
 const availableList = document.getElementById("available-list");
+const logoutButton = document.getElementById("logout-button");
 
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -153,3 +154,22 @@ async function loadExercises() {
 
 loadMachines();
 loadExercises();
+
+if (logoutButton) {
+    logoutButton.addEventListener("click", async function () {
+        try {
+            const response = await fetch("/api/logout", {
+                method: "POST"
+            });
+
+            if (!response.ok) {
+                console.error("Could not logout");
+                return;
+            }
+
+            window.location.href = "/login";
+        } catch (error) {
+            console.error("Unexpected error during logout:", error);
+        }
+    });
+}
