@@ -92,9 +92,33 @@ func UpdateMachineAvailabilityPostHandler(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		machineRepo := repository.NewMachineRepository(db)
-		err = machineRepo.UpdateAvailability(req.ID, req.Available)
+		cookie, err := r.Cookie("user_id")
 		if err != nil {
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		userID, err := strconv.Atoi(cookie.Value)
+		if err != nil {
+			http.Error(w, "invalid session", http.StatusUnauthorized)
+			return
+		}
+
+		userRepo := repository.NewUserRepository(db)
+		user, err := userRepo.GetByID(userID)
+		if err != nil {
+			http.Error(w, "could not fetch current user", http.StatusInternalServerError)
+			return
+		}
+
+		machineRepo := repository.NewMachineRepository(db)
+		err = machineRepo.UpdateAvailabilityWithUser(req.ID, user.ID, req.Available, user.Role)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				http.Error(w, "machine cannot be updated by this user", http.StatusForbidden)
+				return
+			}
+
 			http.Error(w, "could not update machine availability", http.StatusInternalServerError)
 			return
 		}

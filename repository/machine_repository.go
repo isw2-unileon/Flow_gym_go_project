@@ -15,6 +15,11 @@ func NewMachineRepository(db *sql.DB) *MachineRepository {
 }
 
 func (r *MachineRepository) GetAll() ([]models.Machine, error) {
+	err := r.ReleaseExpiredMachines()
+	if err != nil {
+		return nil, err
+	}
+
 	query := `
 		SELECT id, name, is_available
 		FROM machines
@@ -132,4 +137,94 @@ func (r *MachineRepository) GetByID(id int) (*models.Machine, error) {
 	}
 
 	return &machine, nil
+}
+
+func (r *MachineRepository) ReleaseExpiredMachines() error {
+	query := `
+		UPDATE machines
+		SET
+			is_available = true,
+			last_used_by_user_id = occupied_by_user_id,
+			last_released_at = NOW(),
+			occupied_by_user_id = NULL,
+			occupied_until = NULL
+		WHERE occupied_until IS NOT NULL
+		  AND occupied_until < NOW()
+	`
+
+	_, err := r.DB.Exec(query)
+	return err
+}
+
+func (r *MachineRepository) UpdateAvailabilityWithUser(machineID int, userID int, isAvailable bool, userRole string) error {
+	err := r.ReleaseExpiredMachines()
+	if err != nil {
+		return err
+	}
+
+	if isAvailable {
+		query := `
+			UPDATE machines
+			SET
+				is_available = true,
+				last_used_by_user_id = occupied_by_user_id,
+				last_released_at = NOW(),
+				occupied_by_user_id = NULL,
+				occupied_until = NULL
+			WHERE id = $1
+			  AND (
+			  	occupied_by_user_id = $2
+			  	OR $3 = 'admin'
+			  )
+		`
+
+		result, err := r.DB.Exec(query, machineID, userID, userRole)
+		if err != nil {
+			return err
+		}
+
+		rowsAffected, err := result.RowsAffected()
+		if err != nil {
+			return err
+		}
+
+		if rowsAffected == 0 {
+			return sql.ErrNoRows
+		}
+
+		return nil
+	}
+
+	query := `
+		UPDATE machines
+		SET
+			is_available = false,
+			occupied_by_user_id = $2,
+			occupied_until = NOW() + INTERVAL '15 minutes'
+		WHERE id = $1
+		AND is_available = true
+		AND (
+			$3 = 'admin'
+			OR last_used_by_user_id IS NULL
+			OR last_used_by_user_id != $2
+			OR last_released_at IS NULL
+			OR last_released_at <= NOW() - INTERVAL '10 seconds'
+		)
+	`
+
+	result, err := r.DB.Exec(query, machineID, userID, userRole)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return sql.ErrNoRows
+	}
+
+	return nil
 }
