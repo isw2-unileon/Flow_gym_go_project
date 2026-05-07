@@ -7,6 +7,7 @@ const occupiedCount = document.getElementById("occupied-count");
 const availableList = document.getElementById("available-list");
 const logoutButton = document.getElementById("logout-button");
 const currentUserSpan = document.getElementById("current-user");
+const machineMessage = document.getElementById("machine-message");
 
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -85,10 +86,42 @@ async function loadMachines() {
 
                 if (machine.is_available) {
                     slot.classList.add("available");
-                    if (statusText) statusText.textContent = "Available";
+
+                    if (statusText) {
+                        statusText.textContent = "Available";
+                    }
                 } else {
                     slot.classList.add("occupied");
-                    if (statusText) statusText.textContent = "Occupied";
+
+                    if (statusText) {
+
+                        if (machine.occupied_until) {
+
+                            const occupiedUntil = new Date(machine.occupied_until);
+                            const now = new Date();
+
+                            const diffMs = occupiedUntil - now;
+
+                            if (diffMs > 0) {
+
+                                const totalSeconds = Math.floor(diffMs / 1000);
+
+                                const minutes = Math.floor(totalSeconds / 60);
+                                const seconds = totalSeconds % 60;
+
+                                statusText.textContent =
+                                    `Occupied (${minutes}m ${seconds}s)`;
+
+                            } else {
+
+                                statusText.textContent = "Occupied";
+                            }
+
+                        } else {
+
+                            statusText.textContent = "Occupied";
+                        }
+                    }
                 }
             }
         });
@@ -113,11 +146,19 @@ async function toggleMachineAvailability(machineId, currentAvailability) {
         });
 
         if (!response.ok) {
-            console.error("Could not update machine availability");
+            const errorMessage = await response.text();
+
+            if (machineMessage) {
+                machineMessage.textContent = errorMessage || "Could not update machine availability.";
+            }
+
             return;
         }
 
         await loadMachines();
+        if (machineMessage) {
+            machineMessage.textContent = "";
+        }
     } catch (error) {
         console.error("Error updating machine availability:", error);
     }
@@ -198,3 +239,5 @@ async function loadCurrentUser() {
 loadMachines();
 loadExercises();
 loadCurrentUser();
+
+setInterval(loadMachines, 1000);

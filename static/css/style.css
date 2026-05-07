@@ -427,3 +427,12 @@ button:hover {
     padding: 9px 14px;
     border-radius: 8px;
 }
+
+.machine-message {
+    min-height: 24px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #b45309;
+    text-align: center;
+}

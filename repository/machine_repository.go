@@ -21,7 +21,7 @@ func (r *MachineRepository) GetAll() ([]models.Machine, error) {
 	}
 
 	query := `
-		SELECT id, name, is_available
+		SELECT id, name, is_available, occupied_until
 		FROM machines
 		ORDER BY id
 	`
@@ -40,6 +40,7 @@ func (r *MachineRepository) GetAll() ([]models.Machine, error) {
 			&machine.ID,
 			&machine.Name,
 			&machine.IsAvailable,
+			&machine.OccupiedUntil,
 		)
 		if err != nil {
 			return nil, err
@@ -149,7 +150,7 @@ func (r *MachineRepository) ReleaseExpiredMachines() error {
 			occupied_by_user_id = NULL,
 			occupied_until = NULL
 		WHERE occupied_until IS NOT NULL
-		  AND occupied_until < NOW()
+		  AND occupied_until < timezone('utc', now())
 	`
 
 	_, err := r.DB.Exec(query)
@@ -167,8 +168,8 @@ func (r *MachineRepository) UpdateAvailabilityWithUser(machineID int, userID int
 			UPDATE machines
 			SET
 				is_available = true,
-				last_used_by_user_id = occupied_by_user_id,
-				last_released_at = NOW(),
+				last_used_by_user_id = $2,
+				last_released_at = timezone('utc', now()),
 				occupied_by_user_id = NULL,
 				occupied_until = NULL
 			WHERE id = $1
@@ -200,7 +201,7 @@ func (r *MachineRepository) UpdateAvailabilityWithUser(machineID int, userID int
 		SET
 			is_available = false,
 			occupied_by_user_id = $2,
-			occupied_until = NOW() + INTERVAL '15 minutes'
+			occupied_until = timezone('utc', now()) + INTERVAL '15 minutes'
 		WHERE id = $1
 		AND is_available = true
 		AND (
@@ -208,7 +209,7 @@ func (r *MachineRepository) UpdateAvailabilityWithUser(machineID int, userID int
 			OR last_used_by_user_id IS NULL
 			OR last_used_by_user_id != $2
 			OR last_released_at IS NULL
-			OR last_released_at <= NOW() - INTERVAL '10 seconds'
+			OR last_released_at <= timezone('utc', now()) - INTERVAL '10 seconds'
 		)
 	`
 
