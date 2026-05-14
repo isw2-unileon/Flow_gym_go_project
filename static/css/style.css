@@ -150,6 +150,7 @@ button:hover {
 .result-error p {
     color: #7f1d1d;
 }
+
 .result p {
     margin: 8px 0;
     line-height: 1.5;
@@ -435,4 +436,167 @@ button:hover {
     font-weight: bold;
     color: #b45309;
     text-align: center;
+}
+
+/* =========================
+   MODERN LOGIN PAGE
+========================= */
+
+.login-layout {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #f8fafc;
+}
+
+.login-image-side {
+    position: relative;
+    background-image:
+        linear-gradient(rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.75)),
+        url('/static/images/gym-login.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.login-overlay {
+    max-width: 500px;
+    color: white;
+}
+
+.login-overlay h1 {
+    font-size: 72px;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.login-overlay p {
+    font-size: 22px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.login-form-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background:
+        radial-gradient(circle at top right, #dbeafe, transparent 30%),
+        #f8fafc;
+}
+
+.login-card-modern {
+    width: 100%;
+    max-width: 460px;
+    background: white;
+    border-radius: 24px;
+    padding: 48px;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+    border: 1px solid rgba(203, 213, 225, 0.5);
+}
+
+.login-header {
+    margin-bottom: 30px;
+}
+
+.login-header h2 {
+    margin: 0;
+    font-size: 38px;
+    color: #0f172a;
+}
+
+.login-header p {
+    margin-top: 10px;
+    color: #64748b;
+    font-size: 15px;
+}
+
+.login-card-modern form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.login-card-modern label {
+    font-weight: 700;
+    color: #334155;
+}
+
+.login-card-modern input {
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.login-card-modern input:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+}
+
+.login-card-modern button {
+    margin-top: 10px;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    background: linear-gradient(to right, #0ea5e9, #2563eb);
+    transition: all 0.2s ease;
+}
+
+.login-card-modern button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.22);
+}
+
+.auth-message {
+    margin-top: 18px;
+    color: #dc2626;
+    font-weight: 600;
+    min-height: 24px;
+}
+
+.login-links {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.login-links p {
+    margin: 0;
+    color: #475569;
+}
+
+.login-links a {
+    color: #2563eb;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.login-links a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 950px) {
+    .login-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .login-image-side {
+        min-height: 280px;
+    }
+
+    .login-overlay h1 {
+        font-size: 52px;
+    }
 }
