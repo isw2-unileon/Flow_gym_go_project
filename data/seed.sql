@@ -71,3 +71,29 @@ INSERT INTO exercise_machines (exercise_id, machine_id) VALUES
 
 INSERT INTO users (name, email) VALUES
 ('Test User', 'testuser@flowgym.com');
+
+-- Table for storing user routines
+CREATE TABLE IF NOT EXISTS routines (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Intermediate table for linking routines with exercises and maintaining the sequence of the routine
+CREATE TABLE IF NOT EXISTS routine_exercises (
+    id SERIAL PRIMARY KEY,
+    routine_id INTEGER NOT NULL,
+    exercise_id INTEGER NOT NULL,
+    exercise_order INTEGER NOT NULL, -- Determine which exercise comes first, second, and so on.
+    FOREIGN KEY (routine_id) REFERENCES routines(id) ON DELETE CASCADE,
+    FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE,
+    UNIQUE (routine_id, exercise_id) -- The same exercise should not be repeated in the same routine
+);
+
+-- (Optional) Sample data
+INSERT INTO routines (user_id, name) VALUES (1, 'Full Body Workout');
+INSERT INTO routine_exercises (routine_id, exercise_id, exercise_order) VALUES 
+(1, 1, 1), -- Bench Press 1º
+(1, 3, 2), -- Lat Pulldown 2º
+(1, 5, 3); -- Leg Press 3º
