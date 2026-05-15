@@ -8,6 +8,16 @@ const availableList = document.getElementById("available-list");
 const logoutButton = document.getElementById("logout-button");
 const currentUserSpan = document.getElementById("current-user");
 const machineMessage = document.getElementById("machine-message");
+// --- NEW VARIABLES FOR ROUTINES ---
+const routineSelect = document.getElementById("routine-select");
+const startRoutineBtn = document.getElementById("start-routine-btn");
+const routineProgressDiv = document.getElementById("routine-progress");
+const currentRoutineExerciseSpan = document.getElementById("current-routine-exercise");
+const nextExerciseBtn = document.getElementById("next-exercise-btn");
+const exerciseInput = document.getElementById("exercise"); // Referencia directa al input
+
+let currentRoutine = [];
+let currentExerciseIndex = 0;
 
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -235,6 +245,67 @@ async function loadCurrentUser() {
         window.location.href = "/login";
     }
 }
+// --- LOGIC FOR ROUTINES ---
+async function loadRoutines() {
+    // For now, we'll hardcode userId=1 for testing purposes.
+    // Once we have the actual user in JavaScript, we can replace this ‘1’ with their ID.
+    try {
+        const response = await fetch("/routines?userId=1");
+        if (!response.ok) return;
+        
+        const routines = await response.json();
+        
+        routines.forEach(routine => {
+            const option = document.createElement("option");
+            option.value = routine.id;
+            option.textContent = routine.name;
+            routineSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Could not load routines:", error);
+    }
+}
+
+// Enable the Start button when a routine is selected
+routineSelect.addEventListener("change", (e) => {
+    startRoutineBtn.disabled = e.target.value === "";
+});
+
+// When you click “Start Routine” (We will simulate the list of exercises for that routine)
+startRoutineBtn.addEventListener("click", () => {
+    // Ideally, we would make a request to an endpoint that would return
+    // the specific exercises for the selected routine. 
+    // To simplify this initial iteration and allow me to close it:
+    currentRoutine = ["Bench Press", "Lat Pulldown", "Leg Press"];
+    currentExerciseIndex = 0;
+    
+    routineProgressDiv.style.display = "block";
+    updateRoutineUI();
+});
+
+// When you click “Next Exercise”
+nextExerciseBtn.addEventListener("click", () => {
+    currentExerciseIndex++;
+    if (currentExerciseIndex < currentRoutine.length) {
+        updateRoutineUI();
+    } else {
+        routineProgressDiv.style.display = "none";
+        alert("Routine Finished! Great Job!");
+        currentRoutine = [];
+    }
+});
+
+function updateRoutineUI() {
+    const nextExerciseName = currentRoutine[currentExerciseIndex];
+    currentRoutineExerciseSpan.textContent = nextExerciseName;
+    
+    // Auto-rellenar el formulario de recomendación y hacer submit
+    exerciseInput.value = nextExerciseName;
+    form.dispatchEvent(new Event('submit'));
+}
+
+// Add the initial call alongside the others
+loadRoutines();
 
 loadMachines();
 loadExercises();
