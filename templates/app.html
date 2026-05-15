@@ -20,6 +20,20 @@
         </header>
 
         <section class="top-panel">
+            <div class="routine-panel">
+                <h2>My Routine</h2>
+                <div class="routine-controls">
+                    <select id="routine-select">
+                        <option value="">Select a Routine</option>
+                    </select>
+                    <button id="start-routine-btn" disabled>Start Routine</button>
+                </div>
+                <div id="routine-progress" class="routine-progress" style="display: none;">
+                    <h3>Current Exercise: <span id="current-routine-exercise">-</span></h3>
+                    <button id="next-exercise-btn">Next Exercise</button>
+                </div>
+            </div>
+
             <div class="recommendation-panel">
                 <h2>Exercise Recommendation</h2>
                 <form id="recommendation-form">

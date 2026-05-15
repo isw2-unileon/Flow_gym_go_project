@@ -600,3 +600,22 @@ button:hover {
         font-size: 52px;
     }
 }
+
+.routine-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+.routine-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.routine-progress {
+    background: #f0f7ff;
+    padding: 15px;
+    border-radius: 4px;
+    border-left: 4px solid #0056b3;
+}
