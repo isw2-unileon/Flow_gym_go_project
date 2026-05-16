@@ -9,34 +9,58 @@
 </head>
 
 <body>
-    <div class="auth-page">
-        <div class="auth-card">
-            <h1>FlowGym</h1>
-            <h2>Create account</h2>
 
-            <form id="register-form">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+    <div class="register-layout">
 
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <div class="register-info-side">
+            <div class="register-info-content">
+                <h1>Join FlowGym</h1>
 
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <p>
+                    Create your account and optimize your gym experience
+                    with real-time machine availability and smart exercise recommendations.
+                </p>
+            </div>
+        </div>
 
-                <button type="submit">Register</button>
-            </form>
+        <div class="register-form-side">
 
-            <div id="register-result" class="auth-message"></div>
+            <div class="register-card">
 
-            <p class="auth-link">
-                Already have an account?
-                <a href="/login">Login here</a>
-            </p>
+                <div class="register-header">
+                    <h2>Create account</h2>
+                    <p>Start training smarter today.</p>
+                </div>
 
-            <p class="auth-link">
-                <a href="/">Back to home</a>
-            </p>
+                <form id="register-form">
+
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                    <button type="submit">Create account</button>
+                </form>
+
+                <div id="register-result" class="auth-message"></div>
+
+                <div class="register-links">
+
+                    <p>
+                        Already have an account?
+                        <a href="/login">Login here</a>
+                    </p>
+
+                    <p>
+                        <a href="/">Back to home</a>
+                    </p>
+
+                </div>
+            </div>
         </div>
     </div>
 
@@ -70,11 +94,13 @@
                 }
 
                 window.location.href = "/login";
+
             } catch (error) {
                 registerResult.textContent = "Unexpected error during registration.";
             }
         });
     </script>
+
 </body>
 
 </html>
