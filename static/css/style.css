@@ -600,3 +600,61 @@ button:hover {
         font-size: 52px;
     }
 }
+
+/* =========================
+   REGISTER PAGE LAYOUT
+========================= */
+
+.register-layout {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.register-info-side {
+    background:
+        linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.85)),
+        url('/static/images/gym-login.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+}
+
+.register-info-content {
+    max-width: 520px;
+    color: white;
+}
+
+.register-info-content h1 {
+    font-size: 68px;
+    margin-bottom: 20px;
+}
+
+.register-info-content p {
+    font-size: 21px;
+    line-height: 1.7;
+}
+
+.register-form-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: #f8fafc;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 480px;
+}
+
+.register-header {
+    margin-bottom: 28px;
+}
+
+.register-links {
+    margin-top: 24px;
+}
