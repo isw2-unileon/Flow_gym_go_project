@@ -14,9 +14,10 @@ const startRoutineBtn = document.getElementById("start-routine-btn");
 const routineProgressDiv = document.getElementById("routine-progress");
 const currentRoutineExerciseSpan = document.getElementById("current-routine-exercise");
 const nextExerciseBtn = document.getElementById("next-exercise-btn");
-const exerciseInput = document.getElementById("exercise"); // Referencia directa al input
+const exerciseInput = document.getElementById("exercise");
 
-let currentRoutine = [];
+let allRoutines = [];      // This is where we'll store the complete routines returned by the database
+let currentRoutine = [];   // List of exercise names in the active routine
 let currentExerciseIndex = 0;
 
 form.addEventListener("submit", async function (event) {
@@ -240,22 +241,27 @@ async function loadCurrentUser() {
         const user = await response.json();
 
         currentUserSpan.textContent = `Logged in as ${user.name} · ${user.role}`;
+        
+        //We pass the actual ID returned by the session API
+        loadRoutines(user.id);
     } catch (error) {
         console.error("Could not load current user:", error);
         window.location.href = "/login";
     }
 }
 // --- LOGIC FOR ROUTINES ---
-async function loadRoutines() {
-    // For now, we'll hardcode userId=1 for testing purposes.
-    // Once we have the actual user in JavaScript, we can replace this ‘1’ with their ID.
+// Function that now receives the actual ID of the logged-in user
+async function loadRoutines(userId) {
     try {
-        const response = await fetch("/routines?userId=1");
+        const response = await fetch(`/routines?userId=${userId}`);
         if (!response.ok) return;
         
-        const routines = await response.json();
+        allRoutines = await response.json();
         
-        routines.forEach(routine => {
+        // We clear the selector just in case and leave the default option
+        routineSelect.innerHTML = '<option value="">Select a Routine</option>';
+        
+        allRoutines.forEach(routine => {
             const option = document.createElement("option");
             option.value = routine.id;
             option.textContent = routine.name;
@@ -266,24 +272,32 @@ async function loadRoutines() {
     }
 }
 
-// Enable the Start button when a routine is selected
+// Enable the “Start” button only when a routine is selected
 routineSelect.addEventListener("change", (e) => {
     startRoutineBtn.disabled = e.target.value === "";
 });
 
-// When you click “Start Routine” (We will simulate the list of exercises for that routine)
+// When you click “Start Routine” (We map the actual exercises from the JSON in the database)
 startRoutineBtn.addEventListener("click", () => {
-    // Ideally, we would make a request to an endpoint that would return
-    // the specific exercises for the selected routine. 
-    // To simplify this initial iteration and allow me to close it:
-    currentRoutine = ["Bench Press", "Lat Pulldown", "Leg Press"];
+    const selectedRoutineId = parseInt(routineSelect.value);
+    
+    // We look for the selected routine in our local list 'allRoutines'
+    const selectedRoutine = allRoutines.find(r => r.id === selectedRoutineId);
+    
+    if (!selectedRoutine || !selectedRoutine.exercises || selectedRoutine.exercises.length === 0) {
+        alert("This routine has no exercises assigned yet.");
+        return;
+    }
+
+    // We extract only the names of the exercises, preserving the order from the database
+    currentRoutine = selectedRoutine.exercises.map(re => re.exercise.name);
     currentExerciseIndex = 0;
     
     routineProgressDiv.style.display = "block";
     updateRoutineUI();
 });
 
-// When you click “Next Exercise”
+// Button to advance through the training circuit
 nextExerciseBtn.addEventListener("click", () => {
     currentExerciseIndex++;
     if (currentExerciseIndex < currentRoutine.length) {
@@ -295,11 +309,12 @@ nextExerciseBtn.addEventListener("click", () => {
     }
 });
 
+// Automatically populates the recommendation search bar with the current exercise
 function updateRoutineUI() {
     const nextExerciseName = currentRoutine[currentExerciseIndex];
     currentRoutineExerciseSpan.textContent = nextExerciseName;
     
-    // Auto-rellenar el formulario de recomendación y hacer submit
+    // We enter the exercise into your recommendation form and click submit
     exerciseInput.value = nextExerciseName;
     form.dispatchEvent(new Event('submit'));
 }
