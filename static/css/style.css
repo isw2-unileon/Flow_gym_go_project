@@ -601,7 +601,9 @@ button:hover {
     }
 }
 
-
+/* =========================
+   REGISTER PAGE
+========================= */
 
 .register-layout {
     min-height: 100vh;
@@ -647,455 +649,259 @@ button:hover {
 .register-card {
     width: 100%;
     max-width: 480px;
+    background: white;
+    padding: 50px;
+    border-radius: 28px;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+    border: 1px solid rgba(203, 213, 225, 0.5);
 }
 
 .register-header {
     margin-bottom: 28px;
 }
 
+.register-header h2 {
+    margin: 0;
+    font-size: 40px;
+    color: #0f172a;
+}
+
+.register-header p {
+    margin-top: 12px;
+    color: #64748b;
+    font-size: 16px;
+}
+
+.register-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.register-card label {
+    font-weight: 700;
+    color: #334155;
+}
+
+.register-card input {
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+}
+
+.register-card button {
+    margin-top: 10px;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(to right, #0ea5e9, #2563eb);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .register-links {
     margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
-    .routine-panel {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
+.register-links a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 700;
+}
 
-    .routine-controls {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 15px;
-    }
-
-    .routine-progress {
-        background: #f0f7ff;
-        padding: 15px;
-        border-radius: 4px;
-        border-left: 4px solid #0056b3;
-    }
-
-    /* =========================
-   REGISTER PAGE STYLING
+/* =========================
+   LANDING PAGE
 ========================= */
 
-    .register-card {
-        background: white;
-        padding: 50px;
-        border-radius: 28px;
-        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
-        border: 1px solid rgba(203, 213, 225, 0.5);
+.landing-wrapper {
+    min-height: 100vh;
+    padding: 60px;
+    background:
+        radial-gradient(circle at top left, #dbeafe, transparent 25%),
+        radial-gradient(circle at bottom right, #bfdbfe, transparent 25%),
+        #f8fafc;
+    overflow: hidden;
+}
+
+.landing-hero {
+    min-height: calc(100vh - 120px);
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 60px;
+}
+
+.landing-content {
+    max-width: 620px;
+}
+
+.landing-badge {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: #2563eb;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+.landing-content h1 {
+    font-size: 72px;
+    line-height: 1.05;
+    margin: 0;
+    background: linear-gradient(to right, #0f172a, #2563eb);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.landing-description {
+    margin-top: 28px;
+    font-size: 20px;
+    line-height: 1.7;
+    color: #475569;
+}
+
+.landing-actions {
+    display: flex;
+    gap: 18px;
+    margin-top: 40px;
+}
+
+.landing-button {
+    padding: 16px 28px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing-button:first-child {
+    background: linear-gradient(to right, #0ea5e9, #2563eb);
+    color: white;
+}
+
+.landing-button.secondary {
+    background: white;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+}
+
+.landing-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.preview-card {
+    position: relative;
+    background: white;
+    padding: 28px;
+    border-radius: 22px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(203, 213, 225, 0.45);
+    transition: all 0.25s ease;
+}
+
+.preview-card:hover {
+    transform: translateY(-4px);
+}
+
+.preview-card h3 {
+    margin-top: 14px;
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #0f172a;
+}
+
+.preview-card p {
+    margin: 0;
+    color: #64748b;
+}
+
+.preview-status {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.preview-status.available {
+    background: #22c55e;
+}
+
+.preview-status.occupied {
+    background: #ef4444;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+    .landing-hero,
+    .register-layout {
+        grid-template-columns: 1fr;
     }
 
-    .register-header h2 {
-        margin: 0;
-        font-size: 40px;
-        color: #0f172a;
+    .landing-hero {
+        text-align: center;
     }
 
-    .register-header p {
-        margin-top: 12px;
-        color: #64748b;
-        font-size: 16px;
+    .landing-actions {
+        justify-content: center;
+        flex-wrap: wrap;
     }
-
-    .register-card form {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-    }
-
-    .register-card label {
-        font-weight: 700;
-        color: #334155;
-    }
-
-    .register-card input {
-        padding: 16px;
-        border-radius: 14px;
-        border: 1px solid #cbd5e1;
-        font-size: 15px;
-        transition: all 0.2s ease;
-    }
-
-    .register-card input:focus {
-        outline: none;
-        border-color: #0ea5e9;
-        box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
-    }
-
-    .register-card button {
-        margin-top: 10px;
-        padding: 16px;
-        border-radius: 14px;
-        border: none;
-        background: linear-gradient(to right, #0ea5e9, #2563eb);
-        color: white;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .register-card button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.22);
-    }
-
-    .register-links {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .register-links p {
-        margin: 0;
-        color: #475569;
-    }
-
-    .register-links a {
-        color: #2563eb;
-        text-decoration: none;
-        font-weight: 700;
-    }
-
-    .register-links a:hover {
-        text-decoration: underline;
-    }
-
-    /* =========================
-   LANDING PAGE STYLING
-    ========================= */
 
     .landing-content h1 {
-        background: linear-gradient(to right, #0f172a, #2563eb);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-size: 58px;
+    }
+
+    .register-info-side {
+        min-height: 320px;
+        padding: 40px;
+    }
+
+    .register-info-content {
+        text-align: center;
+    }
+}
+
+@media (max-width: 750px) {
+
+    .landing-wrapper {
+        padding: 30px 20px;
+    }
+
+    .landing-content h1 {
+        font-size: 42px;
+    }
+
+    .landing-actions {
+        flex-direction: column;
     }
 
     .landing-button {
-        padding: 16px 28px;
-        border-radius: 14px;
-        font-size: 16px;
-        font-weight: 700;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+        width: 100%;
     }
 
-    .landing-button:first-child {
-        background: linear-gradient(to right, #0ea5e9, #2563eb);
-        color: white;
-        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.22);
+    .register-form-side {
+        padding: 20px;
     }
 
-    .landing-button:first-child:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 16px 32px rgba(37, 99, 235, 0.28);
-    }
-
-    .landing-button.secondary {
-        background: white;
-        color: #0f172a;
-        border: 1px solid #cbd5e1;
-    }
-
-    .landing-button.secondary:hover {
-        background: #f8fafc;
-        transform: translateY(-2px);
-    }
-
-    .preview-card {
-        transition: all 0.25s ease;
-    }
-
-    .preview-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
-    }
-
-    .preview-card:nth-child(1) {
-        background: linear-gradient(to right, #f0fdf4, #ffffff);
-    }
-
-    .preview-card:nth-child(2) {
-        background: linear-gradient(to right, #fef2f2, #ffffff);
-    }
-
-    .preview-card:nth-child(3) {
-        background: linear-gradient(to right, #eff6ff, #ffffff);
-    }
-
-    .preview-status.available {
-        box-shadow: 0 0 12px rgba(34, 197, 94, 0.55);
-    }
-
-    .preview-status.occupied {
-        box-shadow: 0 0 12px rgba(239, 68, 68, 0.55);
-    }
-
-    .landing-badge {
-        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12);
-    }
-
-    .landing-wrapper {
-        overflow: hidden;
-    }
-
-    .landing-preview {
-        position: relative;
-    }
-
-    .landing-preview::before {
-        content: "";
-        position: absolute;
-        inset: -20px;
-        background: radial-gradient(circle, rgba(59, 130, 246, 0.08), transparent 70%);
-        z-index: 0;
-    }
-
-    .preview-card {
-        position: relative;
-        z-index: 1;
-
-        @media (max-width: 1100px) {
-
-            .register-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .register-info-side {
-                min-height: 320px;
-                padding: 40px;
-            }
-
-            .register-info-content {
-                text-align: center;
-            }
-
-            .register-info-content h1 {
-                font-size: 54px;
-            }
-
-            .register-info-content p {
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 700px) {
-
-            .register-form-side {
-                padding: 20px;
-            }
-
-            .register-card {
-                padding: 32px 24px;
-                border-radius: 20px;
-            }
-
-            .register-header h2 {
-                font-size: 32px;
-            }
-
-            .register-card input {
-                padding: 14px;
-                font-size: 14px;
-            }
-
-            .register-card button {
-                padding: 14px;
-                font-size: 15px;
-            }
-
-            .register-info-content h1 {
-                font-size: 42px;
-            }
-
-            .register-info-content p {
-                font-size: 16px;
-            }
-        }
-
-        /* =========================
-   LANDING PAGE STRUCTURE
-   ========================= */
-
-
-        .landing-wrapper {
-            min-height: 100vh;
-            padding: 60px;
-            background:
-                radial-gradient(circle at top left, #dbeafe, transparent 25%),
-                radial-gradient(circle at bottom right, #bfdbfe, transparent 25%),
-                #f8fafc;
-        }
-
-        .landing-hero {
-            min-height: calc(100vh - 120px);
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            align-items: center;
-            gap: 60px;
-        }
-
-        .landing-content {
-            max-width: 620px;
-        }
-
-        .landing-badge {
-            display: inline-block;
-            padding: 10px 18px;
-            border-radius: 999px;
-            background: #dbeafe;
-            color: #2563eb;
-            font-weight: 700;
-            font-size: 14px;
-            margin-bottom: 28px;
-        }
-
-        .landing-content h1 {
-            font-size: 72px;
-            line-height: 1.05;
-            margin: 0;
-            color: #0f172a;
-        }
-
-        .landing-description {
-            margin-top: 28px;
-            font-size: 20px;
-            line-height: 1.7;
-            color: #475569;
-        }
-
-        .landing-actions {
-            display: flex;
-            gap: 18px;
-            margin-top: 40px;
-        }
-
-        .landing-preview {
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-        }
-
-        .preview-card {
-            background: white;
-            padding: 28px;
-            border-radius: 22px;
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-            border: 1px solid rgba(203, 213, 225, 0.45);
-        }
-
-        .preview-card h3 {
-            margin-top: 14px;
-            margin-bottom: 10px;
-            font-size: 24px;
-            color: #0f172a;
-        }
-
-        .preview-card p {
-            margin: 0;
-            color: #64748b;
-        }
-
-        .preview-status {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .preview-status.available {
-            background: #22c55e;
-        }
-
-        .preview-status.occupied {
-            background: #ef4444;
-        }
-
-        /* =========================
-        HOMEPAGE RESPONSIVE
-        ========================= */
-
-        @media (max-width: 1100px) {
-
-            .landing-hero {
-                grid-template-columns: 1fr;
-                gap: 50px;
-                text-align: center;
-            }
-
-            .landing-content {
-                margin: 0 auto;
-            }
-
-            .landing-actions {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            .landing-preview {
-                max-width: 700px;
-                margin: 0 auto;
-            }
-
-            .landing-content h1 {
-                font-size: 58px;
-            }
-        }
-
-        @media (max-width: 750px) {
-
-            .landing-wrapper {
-                padding: 30px 20px;
-            }
-
-            .landing-hero {
-                min-height: auto;
-                gap: 36px;
-            }
-
-            .landing-content h1 {
-                font-size: 42px;
-                line-height: 1.15;
-            }
-
-            .landing-description {
-                font-size: 17px;
-            }
-
-            .landing-actions {
-                flex-direction: column;
-            }
-
-            .landing-button {
-                width: 100%;
-            }
-
-            .preview-card {
-                padding: 22px;
-                border-radius: 18px;
-            }
-
-            .preview-card h3 {
-                font-size: 20px;
-            }
-
-            .preview-card p {
-                font-size: 14px;
-            }
-
-            .landing-badge {
-                font-size: 13px;
-                padding: 8px 14px;
-            }
-        }
-
+    .register-card {
+        padding: 32px 24px;
     }
 }
