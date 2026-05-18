@@ -862,238 +862,240 @@ button:hover {
     .preview-card {
         position: relative;
         z-index: 1;
-   REGISTER RESPONSIVE
 
-    @media (max-width: 1100px) {
+        @media (max-width: 1100px) {
 
-        .register-layout {
-            grid-template-columns: 1fr;
+            .register-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .register-info-side {
+                min-height: 320px;
+                padding: 40px;
+            }
+
+            .register-info-content {
+                text-align: center;
+            }
+
+            .register-info-content h1 {
+                font-size: 54px;
+            }
+
+            .register-info-content p {
+                font-size: 18px;
+            }
         }
 
-        .register-info-side {
-            min-height: 320px;
-            padding: 40px;
+        @media (max-width: 700px) {
+
+            .register-form-side {
+                padding: 20px;
+            }
+
+            .register-card {
+                padding: 32px 24px;
+                border-radius: 20px;
+            }
+
+            .register-header h2 {
+                font-size: 32px;
+            }
+
+            .register-card input {
+                padding: 14px;
+                font-size: 14px;
+            }
+
+            .register-card button {
+                padding: 14px;
+                font-size: 15px;
+            }
+
+            .register-info-content h1 {
+                font-size: 42px;
+            }
+
+            .register-info-content p {
+                font-size: 16px;
+            }
         }
 
-        .register-info-content {
-            text-align: center;
-        }
-
-        .register-info-content h1 {
-            font-size: 54px;
-        }
-
-        .register-info-content p {
-            font-size: 18px;
-        }
-    }
-
-    @media (max-width: 700px) {
-
-        .register-form-side {
-            padding: 20px;
-        }
-
-        .register-card {
-            padding: 32px 24px;
-            border-radius: 20px;
-        }
-
-        .register-header h2 {
-            font-size: 32px;
-        }
-
-        .register-card input {
-            padding: 14px;
-            font-size: 14px;
-        }
-
-        .register-card button {
-            padding: 14px;
-            font-size: 15px;
-        }
-
-        .register-info-content h1 {
-            font-size: 42px;
-        }
-
-        .register-info-content p {
-            font-size: 16px;
-        }
-    }
-
-    /* =========================
+        /* =========================
    LANDING PAGE STRUCTURE
+   ========================= */
 
-    .landing-wrapper {
-        min-height: 100vh;
-        padding: 60px;
-        background:
-            radial-gradient(circle at top left, #dbeafe, transparent 25%),
-            radial-gradient(circle at bottom right, #bfdbfe, transparent 25%),
-            #f8fafc;
-    }
 
-    .landing-hero {
-        min-height: calc(100vh - 120px);
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        align-items: center;
-        gap: 60px;
-    }
-
-    .landing-content {
-        max-width: 620px;
-    }
-
-    .landing-badge {
-        display: inline-block;
-        padding: 10px 18px;
-        border-radius: 999px;
-        background: #dbeafe;
-        color: #2563eb;
-        font-weight: 700;
-        font-size: 14px;
-        margin-bottom: 28px;
-    }
-
-    .landing-content h1 {
-        font-size: 72px;
-        line-height: 1.05;
-        margin: 0;
-        color: #0f172a;
-    }
-
-    .landing-description {
-        margin-top: 28px;
-        font-size: 20px;
-        line-height: 1.7;
-        color: #475569;
-    }
-
-    .landing-actions {
-        display: flex;
-        gap: 18px;
-        margin-top: 40px;
-    }
-
-    .landing-preview {
-        display: flex;
-        flex-direction: column;
-        gap: 22px;
-    }
-
-    .preview-card {
-        background: white;
-        padding: 28px;
-        border-radius: 22px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-        border: 1px solid rgba(203, 213, 225, 0.45);
-    }
-
-    .preview-card h3 {
-        margin-top: 14px;
-        margin-bottom: 10px;
-        font-size: 24px;
-        color: #0f172a;
-    }
-
-    .preview-card p {
-        margin: 0;
-        color: #64748b;
-    }
-
-    .preview-status {
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-        display: inline-block;
-    }
-
-    .preview-status.available {
-        background: #22c55e;
-    }
-
-    .preview-status.occupied {
-        background: #ef4444;
-    }
-
-    /* =========================
-   HOMEPAGE RESPONSIVE
-========================= */
-
-    @media (max-width: 1100px) {
+        .landing-wrapper {
+            min-height: 100vh;
+            padding: 60px;
+            background:
+                radial-gradient(circle at top left, #dbeafe, transparent 25%),
+                radial-gradient(circle at bottom right, #bfdbfe, transparent 25%),
+                #f8fafc;
+        }
 
         .landing-hero {
-            grid-template-columns: 1fr;
-            gap: 50px;
-            text-align: center;
+            min-height: calc(100vh - 120px);
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 60px;
         }
 
         .landing-content {
-            margin: 0 auto;
-        }
-
-        .landing-actions {
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .landing-preview {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .landing-content h1 {
-            font-size: 58px;
-        }
-    }
-
-    @media (max-width: 750px) {
-
-        .landing-wrapper {
-            padding: 30px 20px;
-        }
-
-        .landing-hero {
-            min-height: auto;
-            gap: 36px;
-        }
-
-        .landing-content h1 {
-            font-size: 42px;
-            line-height: 1.15;
-        }
-
-        .landing-description {
-            font-size: 17px;
-        }
-
-        .landing-actions {
-            flex-direction: column;
-        }
-
-        .landing-button {
-            width: 100%;
-        }
-
-        .preview-card {
-            padding: 22px;
-            border-radius: 18px;
-        }
-
-        .preview-card h3 {
-            font-size: 20px;
-        }
-
-        .preview-card p {
-            font-size: 14px;
+            max-width: 620px;
         }
 
         .landing-badge {
-            font-size: 13px;
-            padding: 8px 14px;
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 28px;
         }
-    }
 
+        .landing-content h1 {
+            font-size: 72px;
+            line-height: 1.05;
+            margin: 0;
+            color: #0f172a;
+        }
+
+        .landing-description {
+            margin-top: 28px;
+            font-size: 20px;
+            line-height: 1.7;
+            color: #475569;
+        }
+
+        .landing-actions {
+            display: flex;
+            gap: 18px;
+            margin-top: 40px;
+        }
+
+        .landing-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .preview-card {
+            background: white;
+            padding: 28px;
+            border-radius: 22px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+            border: 1px solid rgba(203, 213, 225, 0.45);
+        }
+
+        .preview-card h3 {
+            margin-top: 14px;
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #0f172a;
+        }
+
+        .preview-card p {
+            margin: 0;
+            color: #64748b;
+        }
+
+        .preview-status {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .preview-status.available {
+            background: #22c55e;
+        }
+
+        .preview-status.occupied {
+            background: #ef4444;
+        }
+
+        /* =========================
+        HOMEPAGE RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .landing-hero {
+                grid-template-columns: 1fr;
+                gap: 50px;
+                text-align: center;
+            }
+
+            .landing-content {
+                margin: 0 auto;
+            }
+
+            .landing-actions {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .landing-preview {
+                max-width: 700px;
+                margin: 0 auto;
+            }
+
+            .landing-content h1 {
+                font-size: 58px;
+            }
+        }
+
+        @media (max-width: 750px) {
+
+            .landing-wrapper {
+                padding: 30px 20px;
+            }
+
+            .landing-hero {
+                min-height: auto;
+                gap: 36px;
+            }
+
+            .landing-content h1 {
+                font-size: 42px;
+                line-height: 1.15;
+            }
+
+            .landing-description {
+                font-size: 17px;
+            }
+
+            .landing-actions {
+                flex-direction: column;
+            }
+
+            .landing-button {
+                width: 100%;
+            }
+
+            .preview-card {
+                padding: 22px;
+                border-radius: 18px;
+            }
+
+            .preview-card h3 {
+                font-size: 20px;
+            }
+
+            .preview-card p {
+                font-size: 14px;
+            }
+
+            .landing-badge {
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+        }
+
+    }
 }
