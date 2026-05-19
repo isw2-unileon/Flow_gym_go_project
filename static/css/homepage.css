@@ -425,3 +425,129 @@ body {
     color: #64748b;
     margin-bottom: 4px;
 }
+
+/* =========================
+   GYM MAP REDESIGN
+========================= */
+
+.gym-section {
+    margin-top: 32px;
+}
+
+.gym-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.gym-map {
+    position: relative;
+    min-height: 720px;
+    border-radius: 28px;
+    background:
+        linear-gradient(rgba(15, 23, 42, 0.04), rgba(15, 23, 42, 0.08)),
+        radial-gradient(circle at center, #ffffff 0%, #e2e8f0 100%);
+    border: 2px solid #cbd5e1;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+.gym-map::before {
+    content: "";
+    position: absolute;
+    inset: 24px;
+    border: 2px dashed rgba(148, 163, 184, 0.55);
+    border-radius: 22px;
+    pointer-events: none;
+}
+
+.machine-slot {
+    width: 150px;
+    min-height: 88px;
+    padding: 14px 12px;
+    border-radius: 20px;
+    border: 2px solid #cbd5e1;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+}
+
+.machine-icon {
+    font-size: 24px;
+}
+
+.machine-name {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.machine-status {
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.machine-slot[data-machine-name="Bench"] {
+    top: 44px;
+    left: 44px;
+}
+
+.machine-slot[data-machine-name="Cable Machine"] {
+    top: 44px;
+    left: 250px;
+}
+
+.machine-slot[data-machine-name="Incline Bench"] {
+    top: 44px;
+    left: 456px;
+}
+
+.machine-slot[data-machine-name="Lat Pulldown Machine"] {
+    top: 44px;
+    right: 44px;
+}
+
+.machine-slot[data-machine-name="Pec Deck"] {
+    top: 204px;
+    left: 120px;
+}
+
+.machine-slot[data-machine-name="Seated Row Machine"] {
+    top: 204px;
+    right: 120px;
+}
+
+.machine-slot[data-machine-name="Treadmill"] {
+    top: 304px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.machine-slot[data-machine-name="Leg Extension Machine"] {
+    top: 364px;
+    left: 120px;
+}
+
+.machine-slot[data-machine-name="Smith Machine"] {
+    top: 364px;
+    right: 120px;
+}
+
+.machine-slot[data-machine-name="Leg Press Machine"] {
+    bottom: 48px;
+    left: 88px;
+}
+
+.machine-slot[data-machine-name="Dumbbells"] {
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.machine-slot[data-machine-name="Shoulder Press Machine"] {
+    bottom: 48px;
+    right: 88px;
+}
