@@ -344,3 +344,84 @@ body {
     background: linear-gradient(to right, #fee2e2, #fecaca);
     border-color: #ef4444;
 }
+
+/* =========================
+   MODERN NAVIGATION HEADER
+========================= */
+
+.sidebar-top {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.sidebar-badge {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+.sidebar-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.nav-item {
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-decoration: none;
+    color: #475569;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.nav-item.active {
+    background: linear-gradient(to right, #dbeafe, #eff6ff);
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+}
+
+.dashboard-user-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    border-radius: 18px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(to right, #0ea5e9, #2563eb);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.user-information {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-label {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 4px;
+}

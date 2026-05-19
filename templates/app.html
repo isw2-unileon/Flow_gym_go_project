@@ -16,23 +16,63 @@
 
         <aside class="dashboard-sidebar">
 
-            <div>
+            <div class="sidebar-top">
 
-                <h1 class="dashboard-logo">
-                    FlowGym
-                </h1>
+                <div>
 
-                <p class="dashboard-description">
-                    Smart workout management and machine tracking system.
-                </p>
+                    <span class="sidebar-badge">
+                        Smart Gym
+                    </span>
+
+                    <h1 class="dashboard-logo">
+                        FlowGym
+                    </h1>
+
+                    <p class="dashboard-description">
+                        Smart workout management and machine tracking system.
+                    </p>
+
+                </div>
+
+                <nav class="sidebar-navigation">
+
+                    <a href="#" class="nav-item active">
+                        Dashboard
+                    </a>
+
+                    <a href="#" class="nav-item">
+                        Machines
+                    </a>
+
+                    <a href="#" class="nav-item">
+                        Routines
+                    </a>
+
+                </nav>
 
             </div>
 
             <div class="dashboard-user-section">
 
-                <span id="current-user" class="dashboard-user">
-                    Loading user...
-                </span>
+                <div class="dashboard-user-card">
+
+                    <div class="user-avatar">
+                        S
+                    </div>
+
+                    <div class="user-information">
+
+                        <span class="user-label">
+                            Logged in as
+                        </span>
+
+                        <span id="current-user" class="dashboard-user">
+                            Loading user...
+                        </span>
+
+                    </div>
+
+                </div>
 
                 <button id="logout-button" class="logout-button">
                     Logout
@@ -41,7 +81,6 @@
             </div>
 
         </aside>
-
         <main class="dashboard-main">
 
             <header class="dashboard-header">
