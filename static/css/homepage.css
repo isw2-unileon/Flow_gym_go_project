@@ -551,3 +551,107 @@ body {
     bottom: 48px;
     right: 88px;
 }
+
+/* =========================
+   MACHINE STATUS EFFECTS
+========================= */
+
+.machine-slot {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease,
+        background-color 0.25s ease;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+}
+
+.machine-slot:hover {
+    transform: translateY(-6px) scale(1.03);
+    z-index: 5;
+}
+
+.machine-slot.available {
+    background: linear-gradient(to bottom right, #dcfce7, #f0fdf4);
+    border-color: #22c55e;
+    box-shadow:
+        0 12px 28px rgba(34, 197, 94, 0.18),
+        0 0 18px rgba(34, 197, 94, 0.12);
+}
+
+.machine-slot.available:hover {
+    box-shadow:
+        0 18px 36px rgba(34, 197, 94, 0.25),
+        0 0 24px rgba(34, 197, 94, 0.22);
+}
+
+.machine-slot.occupied {
+    background: linear-gradient(to bottom right, #fee2e2, #fef2f2);
+    border-color: #ef4444;
+    box-shadow:
+        0 12px 28px rgba(239, 68, 68, 0.16),
+        0 0 18px rgba(239, 68, 68, 0.10);
+}
+
+.machine-slot.occupied:hover {
+    box-shadow:
+        0 18px 36px rgba(239, 68, 68, 0.24),
+        0 0 24px rgba(239, 68, 68, 0.18);
+}
+
+.machine-icon {
+    transition: transform 0.25s ease;
+}
+
+.machine-slot:hover .machine-icon {
+    transform: scale(1.15) rotate(-4deg);
+}
+
+.machine-status {
+    transition: all 0.25s ease;
+}
+
+.machine-slot.available .machine-status {
+    color: #15803d;
+}
+
+.machine-slot.occupied .machine-status {
+    color: #b91c1c;
+}
+
+/* =========================
+   MACHINE MESSAGE EFFECT
+========================= */
+
+.machine-message {
+    min-height: 28px;
+    margin-bottom: 20px;
+    padding: 12px 18px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-weight: 600;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+    transition: all 0.25s ease;
+}
+
+/* =========================
+   LEGEND EFFECTS
+========================= */
+
+.legend-color {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.legend-item:hover .legend-color {
+    transform: scale(1.15);
+}
+
+.legend-color.available {
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.45);
+}
+
+.legend-color.occupied {
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+}
