@@ -771,3 +771,213 @@ body {
 .summary-list .summary-count {
     color: #1d4ed8;
 }
+
+/* =========================
+   HOMEPAGE COLORS & TYPOGRAPHY
+========================= */
+
+body {
+    background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.08), transparent 25%),
+        #f8fafc;
+
+    color: #0f172a;
+
+    font-family:
+        Inter,
+        Arial,
+        sans-serif;
+}
+
+/* =========================
+   MAIN TYPOGRAPHY
+========================= */
+
+.dashboard-header h1 {
+    font-size: 58px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.05;
+
+    background: linear-gradient(to right, #0f172a, #2563eb);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dashboard-header p {
+    font-size: 19px;
+    line-height: 1.8;
+    color: #64748b;
+}
+
+.dashboard-logo {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -1px;
+
+    background: linear-gradient(to right, #0f172a, #2563eb);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* =========================
+   PANEL COLORS
+========================= */
+
+.routine-panel,
+.recommendation-panel,
+.gym-section,
+.summary-card {
+    background: rgba(255, 255, 255, 0.92);
+
+    backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+/* =========================
+   BUTTON COLORS
+========================= */
+
+button,
+#recommendation-form button,
+#start-routine-btn,
+#next-exercise-btn {
+    background:
+        linear-gradient(to right,
+            #0ea5e9,
+            #2563eb);
+
+    color: white;
+
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+button:hover,
+#recommendation-form button:hover,
+#start-routine-btn:hover,
+#next-exercise-btn:hover {
+    box-shadow:
+        0 16px 34px rgba(37, 99, 235, 0.24);
+}
+
+/* =========================
+   INPUT COLORS
+========================= */
+
+input,
+select {
+    background: rgba(255, 255, 255, 0.95);
+
+    border: 1px solid #cbd5e1;
+
+    color: #0f172a;
+}
+
+input:focus,
+select:focus {
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 5px rgba(59, 130, 246, 0.12);
+}
+
+/* =========================
+   SIDEBAR COLORS
+========================= */
+
+.dashboard-sidebar {
+    background:
+        linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.98),
+            rgba(248, 250, 252, 0.96));
+
+    backdrop-filter: blur(12px);
+}
+
+.nav-item {
+    color: #475569;
+}
+
+.nav-item:hover {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.nav-item.active {
+    background:
+        linear-gradient(to right,
+            #dbeafe,
+            #eff6ff);
+
+    color: #2563eb;
+}
+
+/* =========================
+   TEXT COLORS
+========================= */
+
+.summary-title,
+.machine-status,
+.legend-item span,
+.dashboard-description,
+.user-label {
+    color: #64748b;
+}
+
+.machine-name,
+.summary-count,
+.gym-header h2,
+.routine-panel h2,
+.recommendation-panel h2 {
+    color: #0f172a;
+}
+
+/* =========================
+   GYM MAP COLORS
+========================= */
+
+.gym-map {
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.78),
+            rgba(241, 245, 249, 0.92)),
+
+        radial-gradient(circle at center,
+            #ffffff 0%,
+            #e2e8f0 100%);
+}
+
+/* =========================
+   LEGEND COLORS
+========================= */
+
+.legend-color.available {
+    background: #22c55e;
+}
+
+.legend-color.occupied {
+    background: #ef4444;
+}
+
+/* =========================
+   RESULT PANELS
+========================= */
+
+.result-neutral {
+    background:
+        linear-gradient(to right, #eff6ff, #dbeafe);
+}
+
+.result-success {
+    background:
+        linear-gradient(to right, #dcfce7, #bbf7d0);
+}
+
+.result-error {
+    background:
+        linear-gradient(to right, #fee2e2, #fecaca);
+}
