@@ -655,3 +655,119 @@ body {
 .legend-color.occupied {
     box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
 }
+
+/* =========================
+   DASHBOARD STATISTICS CARDS
+========================= */
+
+.machine-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 32px 0 38px;
+}
+
+.summary-card {
+    position: relative;
+    overflow: hidden;
+    background: white;
+    border-radius: 26px;
+    padding: 30px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.14);
+}
+
+.summary-card::before {
+    content: "";
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    top: -70px;
+    right: -70px;
+    opacity: 0.12;
+}
+
+.summary-available::before {
+    background: #22c55e;
+}
+
+.summary-occupied::before {
+    background: #ef4444;
+}
+
+.summary-list::before {
+    background: #2563eb;
+}
+
+.summary-title {
+    display: block;
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #64748b;
+}
+
+.summary-count {
+    display: block;
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1;
+    color: #0f172a;
+}
+
+.summary-list-text {
+    margin-top: 14px;
+    display: block;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #334155;
+}
+
+/* =========================
+   CARD COLORS
+========================= */
+
+.summary-available {
+    background:
+        linear-gradient(to bottom right, #f0fdf4, #ffffff);
+    border-color: #bbf7d0;
+}
+
+.summary-occupied {
+    background:
+        linear-gradient(to bottom right, #fef2f2, #ffffff);
+    border-color: #fecaca;
+}
+
+.summary-list {
+    background:
+        linear-gradient(to bottom right, #eff6ff, #ffffff);
+    border-color: #bfdbfe;
+}
+
+/* =========================
+   COUNTER EFFECTS
+========================= */
+
+.summary-available .summary-count {
+    color: #15803d;
+}
+
+.summary-occupied .summary-count {
+    color: #b91c1c;
+}
+
+.summary-list .summary-count {
+    color: #1d4ed8;
+}
