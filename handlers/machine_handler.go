@@ -114,6 +114,11 @@ func UpdateMachineAvailabilityPostHandler(db *sql.DB) http.HandlerFunc {
 		machineRepo := repository.NewMachineRepository(db)
 		err = machineRepo.UpdateAvailabilityWithUser(req.ID, user.ID, req.Available, user.Role)
 		if err != nil {
+			if err == repository.ErrUserAlreadyOccupiesMachine {
+				http.Error(w, "You already occupy another machine. Release it before selecting a new one.", http.StatusConflict)
+				return
+			}
+
 			if err == sql.ErrNoRows {
 				http.Error(w, "machine cannot be updated by this user", http.StatusForbidden)
 				return
