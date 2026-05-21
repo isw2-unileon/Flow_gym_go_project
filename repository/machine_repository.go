@@ -2,9 +2,12 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 
 	"Flow_gym_go_project/models"
 )
+
+var ErrUserAlreadyOccupiesMachine = errors.New("user already occupies another machine")
 
 type MachineRepository struct {
 	DB *sql.DB
@@ -21,7 +24,7 @@ func (r *MachineRepository) GetAll() ([]models.Machine, error) {
 	}
 
 	query := `
-		SELECT id, name, is_available, occupied_until
+		SELECT id, name, is_available, occupied_by_user_id, last_used_by_user_id, last_released_at, occupied_until
 		FROM machines
 		ORDER BY id
 	`
@@ -40,6 +43,9 @@ func (r *MachineRepository) GetAll() ([]models.Machine, error) {
 			&machine.ID,
 			&machine.Name,
 			&machine.IsAvailable,
+			&machine.OccupiedByUserID,
+			&machine.LastUsedByUserID,
+			&machine.LastReleasedAt,
 			&machine.OccupiedUntil,
 		)
 		if err != nil {
@@ -122,7 +128,7 @@ func (r *MachineRepository) UpdateAvailability(machineID int, isAvailable bool) 
 
 func (r *MachineRepository) GetByID(id int) (*models.Machine, error) {
 	query := `
-		SELECT id, name, is_available
+		SELECT id, name, is_available, occupied_by_user_id, last_used_by_user_id, last_released_at, occupied_until
 		FROM machines
 		WHERE id = $1
 	`
@@ -132,6 +138,10 @@ func (r *MachineRepository) GetByID(id int) (*models.Machine, error) {
 		&machine.ID,
 		&machine.Name,
 		&machine.IsAvailable,
+		&machine.OccupiedByUserID,
+		&machine.LastUsedByUserID,
+		&machine.LastReleasedAt,
+		&machine.OccupiedUntil,
 	)
 	if err != nil {
 		return nil, err
@@ -146,7 +156,7 @@ func (r *MachineRepository) ReleaseExpiredMachines() error {
 		SET
 			is_available = true,
 			last_used_by_user_id = occupied_by_user_id,
-			last_released_at = NOW(),
+			last_released_at = timezone('utc', now()),
 			occupied_by_user_id = NULL,
 			occupied_until = NULL
 		WHERE occupied_until IS NOT NULL
@@ -194,6 +204,27 @@ func (r *MachineRepository) UpdateAvailabilityWithUser(machineID int, userID int
 		}
 
 		return nil
+	}
+
+	if userRole != "admin" {
+		var occupiedMachineID int
+
+		err := r.DB.QueryRow(`
+			SELECT id
+			FROM machines
+			WHERE occupied_by_user_id = $1
+			  AND is_available = false
+			  AND id != $2
+			LIMIT 1
+		`, userID, machineID).Scan(&occupiedMachineID)
+
+		if err == nil {
+			return ErrUserAlreadyOccupiesMachine
+		}
+
+		if err != sql.ErrNoRows {
+			return err
+		}
 	}
 
 	query := `
