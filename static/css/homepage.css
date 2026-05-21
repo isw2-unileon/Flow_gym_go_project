@@ -1201,3 +1201,95 @@ select:focus {
     border-color: #fecaca;
     color: #dc2626;
 }
+
+
+/* =========================
+   MACHINE FEEDBACK MESSAGES
+========================= */
+
+.machine-message {
+
+    min-height: 30px;
+
+    margin-bottom: 22px;
+
+    padding: 16px 20px;
+
+    border-radius: 16px;
+
+    border: 1px solid transparent;
+
+    font-weight: 700;
+
+    font-size: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    transition:
+        all 0.3s ease,
+        opacity 0.3s ease,
+        transform 0.3s ease;
+
+    opacity: 1;
+
+    box-shadow:
+        0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+/* SUCCESS */
+
+.machine-message.success {
+
+    background:
+        linear-gradient(to right,
+            #dcfce7,
+            #f0fdf4);
+
+    border-color: #86efac;
+
+    color: #166534;
+}
+
+/* ERROR */
+
+.machine-message.error {
+
+    background:
+        linear-gradient(to right,
+            #fee2e2,
+            #fef2f2);
+
+    border-color: #fecaca;
+
+    color: #b91c1c;
+}
+
+/* WARNING */
+
+.machine-message.warning {
+
+    background:
+        linear-gradient(to right,
+            #fef3c7,
+            #fffbeb);
+
+    border-color: #fcd34d;
+
+    color: #92400e;
+}
+
+/* INFO */
+
+.machine-message.info {
+
+    background:
+        linear-gradient(to right,
+            #dbeafe,
+            #eff6ff);
+
+    border-color: #93c5fd;
+
+    color: #1d4ed8;
+}
