@@ -19,6 +19,7 @@ const exerciseInput = document.getElementById("exercise");
 let allRoutines = [];      // This is where we'll store the complete routines returned by the database
 let currentRoutine = [];   // List of exercise names in the active routine
 let currentExerciseIndex = 0;
+let userOccupiedMachineId = null;
 
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -77,7 +78,8 @@ async function loadMachines() {
         occupiedCount.textContent = occupiedMachines.length;
 
         if (availableMachines.length > 0) {
-            availableList.textContent = availableMachines.map(machine => machine.name).join(", ");
+            availableList.textContent =
+                availableMachines.map(machine => machine.name).join(", ");
         } else {
             availableList.textContent = "No machines available";
         }
@@ -89,20 +91,29 @@ async function loadMachines() {
             const machine = machines.find(m => m.name === machineName);
 
             const statusText = slot.querySelector(".machine-status");
-            if (statusText) statusText.textContent = "Unknown";
+
+            if (statusText) {
+                statusText.textContent = "Unknown";
+            }
 
             if (machine) {
+
                 slot.dataset.machineId = machine.id;
                 slot.dataset.available = machine.is_available;
 
                 if (machine.is_available) {
+
                     slot.classList.add("available");
 
                     if (statusText) {
                         statusText.textContent = "Available";
                     }
+
                 } else {
+
                     slot.classList.add("occupied");
+
+                    userOccupiedMachineId = machine.id;
 
                     if (statusText) {
 
@@ -136,47 +147,17 @@ async function loadMachines() {
                 }
             }
         });
+
     } catch (error) {
+
         console.error("Could not load machines:", error);
     }
 }
 
-async function toggleMachineAvailability(machineId, currentAvailability) {
-    try {
-        const newAvailability = !currentAvailability;
-
-        const response = await fetch("/machines/update-availability-post", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                id: Number(machineId),
-                available: newAvailability
-            })
-        });
-
-        if (!response.ok) {
-            const errorMessage = await response.text();
-
-            if (machineMessage) {
-                machineMessage.textContent = errorMessage || "Could not update machine availability.";
-            }
-
-            return;
-        }
-
-        await loadMachines();
-        if (machineMessage) {
-            machineMessage.textContent = "";
-        }
-    } catch (error) {
-        console.error("Error updating machine availability:", error);
-    }
-}
-
 machineSlots.forEach(slot => {
+
     slot.addEventListener("click", async function () {
+
         const machineId = this.dataset.machineId;
         const currentAvailability = this.dataset.available === "true";
 
@@ -184,7 +165,53 @@ machineSlots.forEach(slot => {
             return;
         }
 
-        await toggleMachineAvailability(machineId, currentAvailability);
+        /*
+            If machine is occupied already,
+            user can free it normally.
+        */
+        if (!currentAvailability) {
+
+            await toggleMachineAvailability(
+                machineId,
+                currentAvailability
+            );
+
+            userOccupiedMachineId = null;
+
+            return;
+        }
+
+        /*
+            Prevent occupying multiple machines.
+        */
+        if (
+            currentAvailability &&
+            userOccupiedMachineId !== null
+        ) {
+
+            machineMessage.textContent =
+                "You already have an occupied machine. Release it before selecting another one.";
+
+            machineMessage.style.color = "#dc2626";
+            machineMessage.style.borderColor = "#fecaca";
+            machineMessage.style.background = "#fef2f2";
+
+            return;
+        }
+
+        await toggleMachineAvailability(
+            machineId,
+            currentAvailability
+        );
+
+        userOccupiedMachineId = Number(machineId);
+
+        machineMessage.textContent =
+            "Machine successfully occupied.";
+
+        machineMessage.style.color = "#166534";
+        machineMessage.style.borderColor = "#bbf7d0";
+        machineMessage.style.background = "#f0fdf4";
     });
 });
 
@@ -241,7 +268,7 @@ async function loadCurrentUser() {
         const user = await response.json();
 
         currentUserSpan.textContent = `Logged in as ${user.name} · ${user.role}`;
-        
+
         //We pass the actual ID returned by the session API
         loadRoutines(user.id);
     } catch (error) {
@@ -255,12 +282,12 @@ async function loadRoutines(userId) {
     try {
         const response = await fetch(`/routines?userId=${userId}`);
         if (!response.ok) return;
-        
+
         allRoutines = await response.json();
-        
+
         // We clear the selector just in case and leave the default option
         routineSelect.innerHTML = '<option value="">Select a Routine</option>';
-        
+
         allRoutines.forEach(routine => {
             const option = document.createElement("option");
             option.value = routine.id;
@@ -280,10 +307,10 @@ routineSelect.addEventListener("change", (e) => {
 // When you click “Start Routine” (We map the actual exercises from the JSON in the database)
 startRoutineBtn.addEventListener("click", () => {
     const selectedRoutineId = parseInt(routineSelect.value);
-    
+
     // We look for the selected routine in our local list 'allRoutines'
     const selectedRoutine = allRoutines.find(r => r.id === selectedRoutineId);
-    
+
     if (!selectedRoutine || !selectedRoutine.exercises || selectedRoutine.exercises.length === 0) {
         alert("This routine has no exercises assigned yet.");
         return;
@@ -292,7 +319,7 @@ startRoutineBtn.addEventListener("click", () => {
     // We extract only the names of the exercises, preserving the order from the database
     currentRoutine = selectedRoutine.exercises.map(re => re.exercise.name);
     currentExerciseIndex = 0;
-    
+
     routineProgressDiv.style.display = "block";
     updateRoutineUI();
 });
@@ -313,7 +340,7 @@ nextExerciseBtn.addEventListener("click", () => {
 function updateRoutineUI() {
     const nextExerciseName = currentRoutine[currentExerciseIndex];
     currentRoutineExerciseSpan.textContent = nextExerciseName;
-    
+
     // We enter the exercise into your recommendation form and click submit
     exerciseInput.value = nextExerciseName;
     form.dispatchEvent(new Event('submit'));
