@@ -1185,3 +1185,19 @@ select:focus {
         top: 1360px;
     }
 }
+
+/* =========================
+   MACHINE VALIDATION STATES
+========================= */
+
+.machine-message.success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #166534;
+}
+
+.machine-message.error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #dc2626;
+}
