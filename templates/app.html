@@ -36,15 +36,15 @@
 
                 <nav class="sidebar-navigation">
 
-                    <a href="#" class="nav-item active">
+                    <a href="#" id="nav-dashboard" class="nav-item active">
                         Dashboard
                     </a>
 
-                    <a href="#" class="nav-item">
+                    <a href="#" id="nav-machines" class="nav-item">
                         Machines
                     </a>
 
-                    <a href="#" class="nav-item">
+                    <a href="#" id="nav-routines" class="nav-item">
                         Routines
                     </a>
 
@@ -83,7 +83,7 @@
         </aside>
         <main class="dashboard-main">
 
-            <header class="dashboard-header">
+            <header id="dash-header" class="dashboard-header">
 
                 <h1>
                     Gym Dashboard
@@ -95,7 +95,7 @@
 
             </header>
 
-            <section class="dashboard-top-grid">
+            <section id="dash-top-grid" class="dashboard-top-grid">
 
                 <div class="routine-panel">
 
@@ -161,7 +161,7 @@
 
             </section>
 
-            <section class="gym-section">
+            <section id="dash-gym-section" class="gym-section">
 
                 <div class="gym-header">
 
@@ -308,6 +308,42 @@
                 </div>
 
             </section>
+
+            <div id="routines-view" style="display: none; width: 100%;">
+                <header class="dashboard-header">
+                    <h1>Routine Management</h1>
+                    <p>Create and customize your personal workout flows.</p>
+                </header>
+
+                <section class="dashboard-top-grid">
+                    <div class="routine-panel" style="grid-column: span 2;">
+                        <h2>Create New Routine</h2>
+                        
+                        <form id="create-routine-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                            <div>
+                                <label for="new-routine-name" style="font-weight: bold; display: block; margin-bottom: 5px;">Routine Name</label>
+                                <input type="text" id="new-routine-name" required placeholder="e.g., Upper Body Power" style="width: 100%; max-width: 400px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                            </div>
+
+                            <div>
+                                <label for="new-routine-exercises" style="font-weight: bold; display: block; margin-bottom: 5px;">Select Exercises (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="new-routine-exercises" multiple required style="width: 100%; max-width: 400px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; height: 150px;">
+                                    <option value="1">Bench Press</option>
+                                    <option value="2">Cable Fly</option>
+                                    <option value="3">Lat Pulldown</option>
+                                    <option value="4">Seated Row</option>
+                                    <option value="5">Leg Press</option>
+                                    <option value="6">Leg Extension</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" style="padding: 12px 20px; background-color: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: fit-content;">
+                                Save Routine
+                            </button>
+                        </form>
+                    </div>
+                </section>
+            </div>
 
         </main>
 
