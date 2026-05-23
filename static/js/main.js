@@ -772,10 +772,30 @@ if (createRoutineForm) {
     createRoutineForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const nameInput = document.getElementById('new-routine-name').value;
+        const nameInput = document.getElementById('new-routine-name').value.trim();
         const selectExercises = document.getElementById('new-routine-exercises');
         
+        // --- (VALIDATIONS) ---
+        
+        if (!nameInput) {
+            alert("⚠️ Routine name cannot be empty.");
+            return; 
+        }
+
+        const nameExists = allRoutines.some(r => r.name.toLowerCase() === nameInput.toLowerCase());
+        if (nameExists) {
+            alert("⚠️ You already have a routine with this name. Please choose a different one.");
+            return; 
+        }
+
         const selectedExerciseIds = Array.from(selectExercises.selectedOptions).map(option => parseInt(option.value));
+        
+        if (selectedExerciseIds.length === 0) {
+            alert("⚠️ Please select at least one exercise to create a routine.");
+            return;
+        }
+        
+        // --- END OF VALIDATIONS ---
 
         const userId = window.loggedInUserId || 1; 
 
@@ -791,13 +811,14 @@ if (createRoutineForm) {
             });
 
             if (response.ok) {
-                alert("Routine created successfully!");
+                alert("✅ Routine created successfully!");
                 createRoutineForm.reset(); 
                 loadRoutines(userId); 
                 
-                navDashboard.click(); 
+                const navDashboard = document.getElementById('nav-dashboard');
+                if (navDashboard) navDashboard.click(); 
             } else {
-                alert("Error creating routine. Check console for details.");
+                alert("❌ Error creating routine.");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -883,8 +904,29 @@ if (editRoutineSelect && editRoutineForm) {
         e.preventDefault();
 
         const routineId = parseInt(editRoutineSelect.value);
-        const nameInput = editRoutineNameInput.value;
+        const nameInput = editRoutineNameInput.value.trim();
         const selectedExerciseIds = Array.from(editRoutineExercisesSelect.selectedOptions).map(option => parseInt(option.value));
+        
+        // --- (VALIDATIONS) ---
+        
+        if (!nameInput) {
+            alert("⚠️ Routine name cannot be empty.");
+            return;
+        }
+
+        const nameExists = allRoutines.some(r => r.name.toLowerCase() === nameInput.toLowerCase() && r.id !== routineId);
+        if (nameExists) {
+            alert("⚠️ Another routine already uses this name. Please choose a different one.");
+            return;
+        }
+
+        if (selectedExerciseIds.length === 0) {
+            alert("⚠️ Please select at least one exercise.");
+            return;
+        }
+
+        // --- END OF VALIDATIONS ---
+
         const userId = window.loggedInUserId || 1;
 
         try {
@@ -900,7 +942,7 @@ if (editRoutineSelect && editRoutineForm) {
             });
 
             if (response.ok) {
-                alert("Routine updated successfully!");
+                alert("✅ Routine updated successfully!");
                 editRoutineForm.reset();
                 editRoutineForm.style.display = "none";
                 editRoutineSelect.value = "";
@@ -910,7 +952,7 @@ if (editRoutineSelect && editRoutineForm) {
                 const navDashboard = document.getElementById('nav-dashboard');
                 if (navDashboard) navDashboard.click();
             } else {
-                alert("Error updating routine.");
+                alert("❌ Error updating routine.");
             }
         } catch (error) {
             console.error("Error updating routine:", error);
