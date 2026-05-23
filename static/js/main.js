@@ -765,7 +765,10 @@ const routinesView = document.getElementById('routines-view');
 if (navRoutines && navDashboard) {
     navRoutines.addEventListener('click', (e) => {
         e.preventDefault();
+
         navDashboard.classList.remove('active');
+        navMachines.classList.remove('active');
+
         navRoutines.classList.add('active');
 
         dashHeader.style.display = 'none';
@@ -777,7 +780,10 @@ if (navRoutines && navDashboard) {
 
     navDashboard.addEventListener('click', (e) => {
         e.preventDefault();
+
         navRoutines.classList.remove('active');
+        navMachines.classList.remove('active');
+
         navDashboard.classList.add('active');
 
         routinesView.style.display = 'none';
