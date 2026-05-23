@@ -87,6 +87,7 @@ func main() {
 	http.HandleFunc("/api/me", handlers.MeHandler(db))
 	http.HandleFunc("/routines", handlers.GetRoutinesByUserIDHandler(db))
 	http.HandleFunc("/routines/create", handlers.CreateRoutineHandler(db))
+	http.HandleFunc("/routines/delete", handlers.DeleteRoutineHandler(db))
 
 	port := os.Getenv("PORT")
 	if port == "" {
