@@ -431,6 +431,11 @@ async function loadExercises() {
             newRoutineExercisesSelect.innerHTML = ""; 
         }
 
+        const editRoutineExercisesSelect = document.getElementById("edit-routine-exercises");
+        if (editRoutineExercisesSelect){
+            editRoutineExercisesSelect.innerHTML = "";
+        }
+
         exercises.forEach(exercise => {
             const datalistOption = document.createElement("option");
             datalistOption.value = exercise.name;
@@ -441,6 +446,13 @@ async function loadExercises() {
                 selectOption.value = exercise.id; 
                 selectOption.textContent = exercise.name; 
                 newRoutineExercisesSelect.appendChild(selectOption);
+            }
+
+            if (editRoutineExercisesSelect) {
+                const selectOption = document.createElement("option");
+                selectOption.value = exercise.id;
+                selectOption.textContent = exercise.name;
+                editRoutineExercisesSelect.appendChild(selectOption);
             }
         });
 
@@ -549,7 +561,12 @@ async function loadRoutines(userId) {
         if (deleteRoutineSelect) {
             deleteRoutineSelect.innerHTML = '<option value="">Select a routine to delete</option>';
         }
-        
+
+        const editRoutineSelect = document.getElementById("edit-routine-select");
+        if (editRoutineSelect) {
+            editRoutineSelect.innerHTML = '<option value="">Select a routine...</option>';
+        }
+
         allRoutines.forEach(routine => {
             const option = document.createElement("option");
             option.value = routine.id;
@@ -561,6 +578,13 @@ async function loadRoutines(userId) {
                 delOption.value = routine.id;
                 delOption.textContent = routine.name;
                 deleteRoutineSelect.appendChild(delOption);
+            }
+
+            if (editRoutineSelect) {
+                const editOption = document.createElement("option");
+                editOption.value = routine.id;
+                editOption.textContent = routine.name;
+                editRoutineSelect.appendChild(editOption);
             }
         });
     } catch (error) {
@@ -817,6 +841,79 @@ if (deleteRoutineSelect && deleteRoutineBtn) {
             }
         } catch (error) {
             console.error("Error deleting routine:", error);
+        }
+    });
+}
+
+// ==========================================
+// --- EDIT AN EXISTING ROUTINE ---
+// ==========================================
+const editRoutineSelect = document.getElementById("edit-routine-select");
+const editRoutineForm = document.getElementById("edit-routine-form");
+const editRoutineNameInput = document.getElementById("edit-routine-name");
+const editRoutineExercisesSelect = document.getElementById("edit-routine-exercises");
+
+if (editRoutineSelect && editRoutineForm) {
+    editRoutineSelect.addEventListener("change", (e) => {
+        const selectedRoutineId = parseInt(e.target.value);
+        
+        if (!selectedRoutineId) {
+            editRoutineForm.style.display = "none"; 
+            return;
+        }
+
+        const routineToEdit = allRoutines.find(r => r.id === selectedRoutineId);
+        if (!routineToEdit) return;
+
+        editRoutineNameInput.value = routineToEdit.name;
+
+        Array.from(editRoutineExercisesSelect.options).forEach(opt => opt.selected = false);
+
+        if (routineToEdit.exercises) {
+            routineToEdit.exercises.forEach(ex => {
+                const optionToSelect = Array.from(editRoutineExercisesSelect.options).find(opt => parseInt(opt.value) === ex.exercise_id);
+                if (optionToSelect) optionToSelect.selected = true;
+            });
+        }
+
+        editRoutineForm.style.display = "flex";
+    });
+
+    editRoutineForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const routineId = parseInt(editRoutineSelect.value);
+        const nameInput = editRoutineNameInput.value;
+        const selectedExerciseIds = Array.from(editRoutineExercisesSelect.selectedOptions).map(option => parseInt(option.value));
+        const userId = window.loggedInUserId || 1;
+
+        try {
+            const response = await fetch("/routines/update", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    routine_id: routineId,
+                    user_id: userId,
+                    name: nameInput,
+                    exercise_ids: selectedExerciseIds
+                })
+            });
+
+            if (response.ok) {
+                alert("Routine updated successfully!");
+                editRoutineForm.reset();
+                editRoutineForm.style.display = "none";
+                editRoutineSelect.value = "";
+                
+                loadRoutines(userId);
+                
+                const navDashboard = document.getElementById('nav-dashboard');
+                if (navDashboard) navDashboard.click();
+            } else {
+                alert("Error updating routine.");
+            }
+        } catch (error) {
+            console.error("Error updating routine:", error);
         }
     });
 }

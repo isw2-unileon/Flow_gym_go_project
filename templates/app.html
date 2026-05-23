@@ -363,6 +363,37 @@
                         </div>
                     </div>
 
+                    <div class="routine-panel" style="grid-column: span 2;">
+                        <h2>Edit Existing Routine</h2>
+                        <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Select a routine to load its current data, make your changes, and save.</p>
+                
+                        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px; max-width: 400px;">
+                            <div>
+                                <label for="edit-routine-select" style="font-weight: bold; display: block; margin-bottom: 5px;">Select Routine to Edit</label>
+                                <select id="edit-routine-select" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                    <option value="">Select a routine...</option>
+                                </select>
+                            </div>
+
+                            <form id="edit-routine-form" style="display: none; flex-direction: column; gap: 15px;">
+                                <div>
+                                    <label for="edit-routine-name" style="font-weight: bold; display: block; margin-bottom: 5px;">Modify Name</label>
+                                    <input type="text" id="edit-routine-name" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                </div>
+
+                                <div>
+                                    <label for="edit-routine-exercises" style="font-weight: bold; display: block; margin-bottom: 5px;">Modify Exercises (Hold Ctrl/Cmd to select multiple)</label>
+                                    <select id="edit-routine-exercises" multiple required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; height: 150px;">
+                                        </select>
+                                </div>
+
+                                <button type="submit" style="padding: 12px 20px; background-color: #16a34a; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: fit-content;">
+                                    Save Changes
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
                 </section>
             </div>
 
