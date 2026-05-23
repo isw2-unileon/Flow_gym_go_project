@@ -137,3 +137,64 @@ func DeleteRoutineHandler(db *sql.DB) http.HandlerFunc {
 		json.NewEncoder(w).Encode(map[string]string{"message": "Routine successfully deleted!"})
 	}
 }
+
+// RoutineUpdateInput defines the expected JSON for updating a routine
+type RoutineUpdateInput struct {
+	RoutineID   int    `json:"routine_id"`
+	UserID      int    `json:"user_id"`
+	Name        string `json:"name"`
+	ExerciseIDs []int  `json:"exercise_ids"`
+}
+
+// UpdateRoutineHandler processes PUT requests to completely replace a routine's data
+func UpdateRoutineHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPut {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		var input RoutineUpdateInput
+		err := json.NewDecoder(r.Body).Decode(&input)
+		if err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		if input.RoutineID == 0 || input.Name == "" || len(input.ExerciseIDs) == 0 || input.UserID == 0 {
+			http.Error(w, "Missing required fields", http.StatusBadRequest)
+			return
+		}
+
+		routineRepo := repository.NewRoutineRepository(db)
+
+		err = routineRepo.UpdateRoutineName(input.RoutineID, input.UserID, input.Name)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				http.Error(w, "Routine not found or unauthorized", http.StatusNotFound)
+				return
+			}
+			http.Error(w, "Error updating routine name: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		err = routineRepo.ClearRoutineExercises(input.RoutineID)
+		if err != nil {
+			http.Error(w, "Error clearing old exercises: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		for index, exerciseID := range input.ExerciseIDs {
+			order := index + 1
+			err = routineRepo.AddExerciseToRoutine(input.RoutineID, exerciseID, order)
+			if err != nil {
+				http.Error(w, "Error saving updated exercise: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Routine successfully updated!"})
+	}
+}

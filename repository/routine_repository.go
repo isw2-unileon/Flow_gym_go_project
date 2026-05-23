@@ -114,3 +114,30 @@ func (r *RoutineRepository) DeleteRoutine(routineID int, userID int) error {
 	
 	return nil
 }
+
+// UpdateRoutineName modifies the name of an existing routine
+func (r *RoutineRepository) UpdateRoutineName(routineID int, userID int, name string) error {
+	query := `UPDATE routines SET name = $1 WHERE id = $2 AND user_id = $3`
+	
+	result, err := r.DB.Exec(query, name, routineID, userID)
+	if err != nil {
+		return err
+	}
+	
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	
+	if rowsAffected == 0 {
+		return sql.ErrNoRows 
+	}
+	return nil
+}
+
+// ClearRoutineExercises deletes all current exercises for a routine before an update
+func (r *RoutineRepository) ClearRoutineExercises(routineID int) error {
+	query := `DELETE FROM routine_exercises WHERE routine_id = $1`
+	_, err := r.DB.Exec(query, routineID)
+	return err
+}
