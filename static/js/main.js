@@ -15,6 +15,8 @@ const routineProgressDiv = document.getElementById("routine-progress");
 const currentRoutineExerciseSpan = document.getElementById("current-routine-exercise");
 const nextExerciseBtn = document.getElementById("next-exercise-btn");
 const exerciseInput = document.getElementById("exercise");
+const routinePreview = document.getElementById("routine-preview");
+const routinePreviewList = document.getElementById("routine-preview-list");
 
 let allRoutines = [];
 let currentRoutine = [];
@@ -571,9 +573,32 @@ async function loadRoutines(userId) {
 ========================= */
 
 routineSelect.addEventListener("change", (e) => {
+    const hasValue = e.target.value !== "";
+    startRoutineBtn.disabled = !hasValue;
+    
+    const deleteBtn = document.getElementById("delete-routine-btn");
+    if (deleteBtn) deleteBtn.disabled = !hasValue;
 
-    startRoutineBtn.disabled =
-        e.target.value === "";
+    if (hasValue && routinePreview && routinePreviewList) {
+        const selectedRoutineId = parseInt(e.target.value);
+        const selectedRoutine = allRoutines.find(r => r.id === selectedRoutineId);
+        
+        routinePreviewList.innerHTML = ""; 
+        
+        if (selectedRoutine && selectedRoutine.exercises && selectedRoutine.exercises.length > 0) {
+            selectedRoutine.exercises.forEach(ex => {
+                const li = document.createElement("li");
+                li.textContent = ex.exercise.name;
+                routinePreviewList.appendChild(li);
+            });
+        } else {
+            routinePreviewList.innerHTML = "<li><em>No exercises assigned yet.</em></li>";
+        }
+        
+        routinePreview.style.display = "block"; 
+    } else if (routinePreview) {
+        routinePreview.style.display = "none"; 
+    }
 });
 
 /* =========================
@@ -610,6 +635,8 @@ startRoutineBtn.addEventListener("click", () => {
 
     currentExerciseIndex = 0;
 
+    routinePreview.style.display = "none";
+    
     routineProgressDiv.style.display = "block";
 
     updateRoutineUI();
