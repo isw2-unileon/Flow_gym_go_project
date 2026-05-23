@@ -418,33 +418,32 @@ machineSlots.forEach(slot => {
 ========================= */
 
 async function loadExercises() {
-
     try {
-
-        const response =
-            await fetch("/exercises");
-
-        const exercises =
-            await response.json();
+        const response = await fetch("/exercises");
+        const exercises = await response.json();
 
         exerciseOptions.innerHTML = "";
+        
+        const newRoutineExercisesSelect = document.getElementById("new-routine-exercises");
+        if (newRoutineExercisesSelect) {
+            newRoutineExercisesSelect.innerHTML = ""; 
+        }
 
         exercises.forEach(exercise => {
+            const datalistOption = document.createElement("option");
+            datalistOption.value = exercise.name;
+            exerciseOptions.appendChild(datalistOption);
 
-            const option =
-                document.createElement("option");
-
-            option.value = exercise.name;
-
-            exerciseOptions.appendChild(option);
+            if (newRoutineExercisesSelect) {
+                const selectOption = document.createElement("option");
+                selectOption.value = exercise.id; 
+                selectOption.textContent = exercise.name; 
+                newRoutineExercisesSelect.appendChild(selectOption);
+            }
         });
 
     } catch (error) {
-
-        console.error(
-            "Could not load exercises:",
-            error
-        );
+        console.error("Could not load exercises:", error);
     }
 }
 
