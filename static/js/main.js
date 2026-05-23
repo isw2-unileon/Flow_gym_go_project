@@ -729,30 +729,6 @@ setInterval(loadMachines, 1000);
 const navDashboard = document.getElementById('nav-dashboard');
 const navRoutines = document.getElementById('nav-routines');
 
-const navMachines = document.getElementById("nav-machines");
-
-if (navMachines) {
-
-    navMachines.addEventListener("click", (e) => {
-
-        e.preventDefault();
-
-        navDashboard.classList.remove("active");
-        navRoutines.classList.remove("active");
-
-        navMachines.classList.add("active");
-
-        routinesView.style.display = "none";
-
-        dashHeader.style.display = "";
-        dashTopGrid.style.display = "";
-        dashGymSection.style.display = "";
-
-        dashGymSection.scrollIntoView({
-            behavior: "smooth"
-        });
-    });
-}
 
 // sections of the Dashboard
 const dashHeader = document.getElementById('dash-header');
