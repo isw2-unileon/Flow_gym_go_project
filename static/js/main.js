@@ -535,40 +535,34 @@ async function loadCurrentUser() {
 ========================= */
 
 async function loadRoutines(userId) {
-
     try {
-
-        const response =
-            await fetch(`/routines?userId=${userId}`);
-
-        if (!response.ok) {
-            return;
+        const response = await fetch(`/routines?userId=${userId}`);
+        if (!response.ok) return;
+        
+        allRoutines = await response.json();
+        
+        routineSelect.innerHTML = '<option value="">Select a Routine</option>';
+        
+        const deleteRoutineSelect = document.getElementById("delete-routine-select");
+        if (deleteRoutineSelect) {
+            deleteRoutineSelect.innerHTML = '<option value="">Select a routine to delete</option>';
         }
-
-        allRoutines =
-            await response.json();
-
-        routineSelect.innerHTML =
-            '<option value="">Select a Routine</option>';
-
+        
         allRoutines.forEach(routine => {
-
-            const option =
-                document.createElement("option");
-
+            const option = document.createElement("option");
             option.value = routine.id;
-
             option.textContent = routine.name;
-
             routineSelect.appendChild(option);
+
+            if (deleteRoutineSelect) {
+                const delOption = document.createElement("option");
+                delOption.value = routine.id;
+                delOption.textContent = routine.name;
+                deleteRoutineSelect.appendChild(delOption);
+            }
         });
-
     } catch (error) {
-
-        console.error(
-            "Could not load routines:",
-            error
-        );
+        console.error("Could not load routines:", error);
     }
 }
 
@@ -756,6 +750,46 @@ if (createRoutineForm) {
             }
         } catch (error) {
             console.error("Error:", error);
+        }
+    });
+}
+
+// ==========================================
+// --- DELETE SELECTED ROUTINE ---
+// ==========================================
+const deleteRoutineSelect = document.getElementById("delete-routine-select");
+const deleteRoutineBtn = document.getElementById("delete-routine-btn");
+
+if (deleteRoutineSelect && deleteRoutineBtn) {
+    deleteRoutineSelect.addEventListener("change", (e) => {
+        deleteRoutineBtn.disabled = e.target.value === "";
+    });
+
+    deleteRoutineBtn.addEventListener("click", async () => {
+        const selectedRoutineId = parseInt(deleteRoutineSelect.value);
+        if (!selectedRoutineId) return;
+
+        const confirmDelete = confirm("Are you sure you want to delete this routine? This action cannot be undone.");
+        if (!confirmDelete) return;
+
+        const userId = window.loggedInUserId || 1;
+
+        try {
+            const response = await fetch(`/routines/delete?id=${selectedRoutineId}&userId=${userId}`, {
+                method: "DELETE"
+            });
+
+            if (response.ok) {
+                alert("Routine deleted successfully!");
+                
+                loadRoutines(userId);
+                
+                deleteRoutineBtn.disabled = true;
+            } else {
+                alert("Error deleting routine. You might not be authorized.");
+            }
+        } catch (error) {
+            console.error("Error deleting routine:", error);
         }
     });
 }
