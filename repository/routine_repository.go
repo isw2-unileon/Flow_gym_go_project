@@ -68,3 +68,28 @@ func (r *RoutineRepository) GetByUserID(userID int) ([]models.Routine, error) {
 
 	return routines, nil
 }
+
+// CreateRoutine inserts a new routine header into the database and returns its new ID
+func (r *RoutineRepository) CreateRoutine(userID int, name string) (int, error) {
+	query := `
+		INSERT INTO routines (user_id, name)
+		VALUES ($1, $2)
+		RETURNING id
+	`
+	var lastInsertId int
+	err := r.DB.QueryRow(query, userID, name).Scan(&lastInsertId)
+	if err != nil {
+		return 0, err
+	}
+	return lastInsertId, nil
+}
+
+// AddExerciseToRoutine links an exercise to a routine with its specific order
+func (r *RoutineRepository) AddExerciseToRoutine(routineID int, exerciseID int, order int) error {
+	query := `
+		INSERT INTO routine_exercises (routine_id, exercise_id, exercise_order)
+		VALUES ($1, $2, $3)
+	`
+	_, err := r.DB.Exec(query, routineID, exerciseID, order)
+	return err
+}
