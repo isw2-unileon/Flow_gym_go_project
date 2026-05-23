@@ -425,14 +425,14 @@ async function loadExercises() {
         const exercises = await response.json();
 
         exerciseOptions.innerHTML = "";
-        
+
         const newRoutineExercisesSelect = document.getElementById("new-routine-exercises");
         if (newRoutineExercisesSelect) {
-            newRoutineExercisesSelect.innerHTML = ""; 
+            newRoutineExercisesSelect.innerHTML = "";
         }
 
         const editRoutineExercisesSelect = document.getElementById("edit-routine-exercises");
-        if (editRoutineExercisesSelect){
+        if (editRoutineExercisesSelect) {
             editRoutineExercisesSelect.innerHTML = "";
         }
 
@@ -443,8 +443,8 @@ async function loadExercises() {
 
             if (newRoutineExercisesSelect) {
                 const selectOption = document.createElement("option");
-                selectOption.value = exercise.id; 
-                selectOption.textContent = exercise.name; 
+                selectOption.value = exercise.id;
+                selectOption.textContent = exercise.name;
                 newRoutineExercisesSelect.appendChild(selectOption);
             }
 
@@ -528,10 +528,10 @@ async function loadCurrentUser() {
         currentUserSpan.textContent =
             `Logged in as ${user.name} · ${user.role}`;
 
-        
+
         window.loggedInUserId = user.id;
-        
-            loadRoutines(user.id);
+
+        loadRoutines(user.id);
 
     } catch (error) {
 
@@ -552,11 +552,11 @@ async function loadRoutines(userId) {
     try {
         const response = await fetch(`/routines?userId=${userId}`);
         if (!response.ok) return;
-        
+
         allRoutines = await response.json();
-        
+
         routineSelect.innerHTML = '<option value="">Select a Routine</option>';
-        
+
         const deleteRoutineSelect = document.getElementById("delete-routine-select");
         if (deleteRoutineSelect) {
             deleteRoutineSelect.innerHTML = '<option value="">Select a routine to delete</option>';
@@ -599,16 +599,16 @@ async function loadRoutines(userId) {
 routineSelect.addEventListener("change", (e) => {
     const hasValue = e.target.value !== "";
     startRoutineBtn.disabled = !hasValue;
-    
+
     const deleteBtn = document.getElementById("delete-routine-btn");
     if (deleteBtn) deleteBtn.disabled = !hasValue;
 
     if (hasValue && routinePreview && routinePreviewList) {
         const selectedRoutineId = parseInt(e.target.value);
         const selectedRoutine = allRoutines.find(r => r.id === selectedRoutineId);
-        
-        routinePreviewList.innerHTML = ""; 
-        
+
+        routinePreviewList.innerHTML = "";
+
         if (selectedRoutine && selectedRoutine.exercises && selectedRoutine.exercises.length > 0) {
             selectedRoutine.exercises.forEach(ex => {
                 const li = document.createElement("li");
@@ -618,10 +618,10 @@ routineSelect.addEventListener("change", (e) => {
         } else {
             routinePreviewList.innerHTML = "<li><em>No exercises assigned yet.</em></li>";
         }
-        
-        routinePreview.style.display = "block"; 
+
+        routinePreview.style.display = "block";
     } else if (routinePreview) {
-        routinePreview.style.display = "none"; 
+        routinePreview.style.display = "none";
     }
 });
 
@@ -660,7 +660,7 @@ startRoutineBtn.addEventListener("click", () => {
     currentExerciseIndex = 0;
 
     routinePreview.style.display = "none";
-    
+
     routineProgressDiv.style.display = "block";
 
     updateRoutineUI();
@@ -729,6 +729,31 @@ setInterval(loadMachines, 1000);
 const navDashboard = document.getElementById('nav-dashboard');
 const navRoutines = document.getElementById('nav-routines');
 
+const navMachines = document.getElementById("nav-machines");
+
+if (navMachines) {
+
+    navMachines.addEventListener("click", (e) => {
+
+        e.preventDefault();
+
+        navDashboard.classList.remove("active");
+        navRoutines.classList.remove("active");
+
+        navMachines.classList.add("active");
+
+        routinesView.style.display = "none";
+
+        dashHeader.style.display = "";
+        dashTopGrid.style.display = "";
+        dashGymSection.style.display = "";
+
+        dashGymSection.scrollIntoView({
+            behavior: "smooth"
+        });
+    });
+}
+
 // sections of the Dashboard
 const dashHeader = document.getElementById('dash-header');
 const dashTopGrid = document.getElementById('dash-top-grid');
@@ -742,11 +767,11 @@ if (navRoutines && navDashboard) {
         e.preventDefault();
         navDashboard.classList.remove('active');
         navRoutines.classList.add('active');
-        
+
         dashHeader.style.display = 'none';
         dashTopGrid.style.display = 'none';
         dashGymSection.style.display = 'none';
-        
+
         routinesView.style.display = 'block';
     });
 
@@ -754,9 +779,9 @@ if (navRoutines && navDashboard) {
         e.preventDefault();
         navRoutines.classList.remove('active');
         navDashboard.classList.add('active');
-        
+
         routinesView.style.display = 'none';
-        
+
         dashHeader.style.display = '';
         dashTopGrid.style.display = '';
         dashGymSection.style.display = '';
@@ -771,33 +796,33 @@ const createRoutineForm = document.getElementById('create-routine-form');
 if (createRoutineForm) {
     createRoutineForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const nameInput = document.getElementById('new-routine-name').value.trim();
         const selectExercises = document.getElementById('new-routine-exercises');
-        
+
         // --- (VALIDATIONS) ---
-        
+
         if (!nameInput) {
             alert("⚠️ Routine name cannot be empty.");
-            return; 
+            return;
         }
 
         const nameExists = allRoutines.some(r => r.name.toLowerCase() === nameInput.toLowerCase());
         if (nameExists) {
             alert("⚠️ You already have a routine with this name. Please choose a different one.");
-            return; 
+            return;
         }
 
         const selectedExerciseIds = Array.from(selectExercises.selectedOptions).map(option => parseInt(option.value));
-        
+
         if (selectedExerciseIds.length === 0) {
             alert("⚠️ Please select at least one exercise to create a routine.");
             return;
         }
-        
+
         // --- END OF VALIDATIONS ---
 
-        const userId = window.loggedInUserId || 1; 
+        const userId = window.loggedInUserId || 1;
 
         try {
             const response = await fetch('/routines/create', {
@@ -812,11 +837,11 @@ if (createRoutineForm) {
 
             if (response.ok) {
                 alert("✅ Routine created successfully!");
-                createRoutineForm.reset(); 
-                loadRoutines(userId); 
-                
+                createRoutineForm.reset();
+                loadRoutines(userId);
+
                 const navDashboard = document.getElementById('nav-dashboard');
-                if (navDashboard) navDashboard.click(); 
+                if (navDashboard) navDashboard.click();
             } else {
                 alert("❌ Error creating routine.");
             }
@@ -853,9 +878,9 @@ if (deleteRoutineSelect && deleteRoutineBtn) {
 
             if (response.ok) {
                 alert("Routine deleted successfully!");
-                
+
                 loadRoutines(userId);
-                
+
                 deleteRoutineBtn.disabled = true;
             } else {
                 alert("Error deleting routine. You might not be authorized.");
@@ -877,9 +902,9 @@ const editRoutineExercisesSelect = document.getElementById("edit-routine-exercis
 if (editRoutineSelect && editRoutineForm) {
     editRoutineSelect.addEventListener("change", (e) => {
         const selectedRoutineId = parseInt(e.target.value);
-        
+
         if (!selectedRoutineId) {
-            editRoutineForm.style.display = "none"; 
+            editRoutineForm.style.display = "none";
             return;
         }
 
@@ -906,9 +931,9 @@ if (editRoutineSelect && editRoutineForm) {
         const routineId = parseInt(editRoutineSelect.value);
         const nameInput = editRoutineNameInput.value.trim();
         const selectedExerciseIds = Array.from(editRoutineExercisesSelect.selectedOptions).map(option => parseInt(option.value));
-        
+
         // --- (VALIDATIONS) ---
-        
+
         if (!nameInput) {
             alert("⚠️ Routine name cannot be empty.");
             return;
@@ -946,9 +971,9 @@ if (editRoutineSelect && editRoutineForm) {
                 editRoutineForm.reset();
                 editRoutineForm.style.display = "none";
                 editRoutineSelect.value = "";
-                
+
                 loadRoutines(userId);
-                
+
                 const navDashboard = document.getElementById('nav-dashboard');
                 if (navDashboard) navDashboard.click();
             } else {
