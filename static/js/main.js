@@ -515,7 +515,10 @@ async function loadCurrentUser() {
         currentUserSpan.textContent =
             `Logged in as ${user.name} · ${user.role}`;
 
-        loadRoutines(user.id);
+        
+        window.loggedInUserId = user.id;
+        
+            loadRoutines(user.id);
 
     } catch (error) {
 
@@ -675,3 +678,85 @@ loadExercises();
 loadCurrentUser();
 
 setInterval(loadMachines, 1000);
+
+// ==========================================
+// --- SIDE MENU NAVIGATION ---
+// ==========================================
+const navDashboard = document.getElementById('nav-dashboard');
+const navRoutines = document.getElementById('nav-routines');
+
+// sections of the Dashboard
+const dashHeader = document.getElementById('dash-header');
+const dashTopGrid = document.getElementById('dash-top-grid');
+const dashGymSection = document.getElementById('dash-gym-section');
+
+// Routines view
+const routinesView = document.getElementById('routines-view');
+
+if (navRoutines && navDashboard) {
+    navRoutines.addEventListener('click', (e) => {
+        e.preventDefault();
+        navDashboard.classList.remove('active');
+        navRoutines.classList.add('active');
+        
+        dashHeader.style.display = 'none';
+        dashTopGrid.style.display = 'none';
+        dashGymSection.style.display = 'none';
+        
+        routinesView.style.display = 'block';
+    });
+
+    navDashboard.addEventListener('click', (e) => {
+        e.preventDefault();
+        navRoutines.classList.remove('active');
+        navDashboard.classList.add('active');
+        
+        routinesView.style.display = 'none';
+        
+        dashHeader.style.display = '';
+        dashTopGrid.style.display = '';
+        dashGymSection.style.display = '';
+    });
+}
+
+// ==========================================
+// --- SUBMIT THE NEW ROUTINE FORM ---
+// ==========================================
+const createRoutineForm = document.getElementById('create-routine-form');
+
+if (createRoutineForm) {
+    createRoutineForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const nameInput = document.getElementById('new-routine-name').value;
+        const selectExercises = document.getElementById('new-routine-exercises');
+        
+        const selectedExerciseIds = Array.from(selectExercises.selectedOptions).map(option => parseInt(option.value));
+
+        const userId = window.loggedInUserId || 1; 
+
+        try {
+            const response = await fetch('/routines/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    name: nameInput,
+                    exercise_ids: selectedExerciseIds
+                })
+            });
+
+            if (response.ok) {
+                alert("Routine created successfully!");
+                createRoutineForm.reset(); 
+                loadRoutines(userId); 
+                
+                navDashboard.click(); 
+            } else {
+                alert("Error creating routine. Check console for details.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    });
+}
