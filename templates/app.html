@@ -312,22 +312,23 @@
             <div id="routines-view" style="display: none; width: 100%;">
                 <header class="dashboard-header">
                     <h1>Routine Management</h1>
-                    <p>Create and customize your personal workout flows.</p>
+                    <p>Create, customize, and delete your personal workout flows.</p>
                 </header>
 
                 <section class="dashboard-top-grid">
-                    <div class="routine-panel" style="grid-column: span 2;">
+            
+                    <div class="routine-panel">
                         <h2>Create New Routine</h2>
-                        
+                
                         <form id="create-routine-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
                             <div>
                                 <label for="new-routine-name" style="font-weight: bold; display: block; margin-bottom: 5px;">Routine Name</label>
-                                <input type="text" id="new-routine-name" required placeholder="e.g., Upper Body Power" style="width: 100%; max-width: 400px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                <input type="text" id="new-routine-name" required placeholder="e.g., Upper Body Power" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
                             </div>
 
                             <div>
                                 <label for="new-routine-exercises" style="font-weight: bold; display: block; margin-bottom: 5px;">Select Exercises (Hold Ctrl/Cmd to select multiple)</label>
-                                <select id="new-routine-exercises" multiple required style="width: 100%; max-width: 400px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; height: 150px;">
+                                <select id="new-routine-exercises" multiple required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; height: 150px;">
                                     <option value="" disabled>Loading exercises...</option>
                                 </select>
                             </div>
@@ -337,6 +338,25 @@
                             </button>
                         </form>
                     </div>
+
+                    <div class="routine-panel">
+                        <h2>Delete Existing Routine</h2>
+                        <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Select a routine you no longer need. This action cannot be undone.</p>
+                
+                        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                            <div>
+                                <label for="delete-routine-select" style="font-weight: bold; display: block; margin-bottom: 5px;">Select Routine</label>
+                                <select id="delete-routine-select" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                    <option value="">Select a routine to delete</option>
+                                </select>
+                            </div>
+                    
+                            <button id="delete-routine-btn" disabled style="padding: 12px 20px; background-color: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: fit-content;">
+                                Delete Routine
+                            </button>
+                        </div>
+                    </div>
+
                 </section>
             </div>
 
