@@ -91,3 +91,49 @@ func CreateRoutineHandler(db *sql.DB) http.HandlerFunc {
 		json.NewEncoder(w).Encode(map[string]string{"message": "Routine successfully created!"})
 	}
 }
+
+// DeleteRoutineHandler handles DELETE requests to remove a user's routine
+func DeleteRoutineHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodDelete {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		routineIdStr := r.URL.Query().Get("id")
+		userIdStr := r.URL.Query().Get("userId")
+
+		if routineIdStr == "" || userIdStr == "" {
+			http.Error(w, "Missing id or userId parameters", http.StatusBadRequest)
+			return
+		}
+
+		routineID, err := strconv.Atoi(routineIdStr)
+		if err != nil {
+			http.Error(w, "Invalid routine ID format", http.StatusBadRequest)
+			return
+		}
+
+		userID, err := strconv.Atoi(userIdStr)
+		if err != nil {
+			http.Error(w, "Invalid user ID format", http.StatusBadRequest)
+			return
+		}
+
+		routineRepo := repository.NewRoutineRepository(db)
+		err = routineRepo.DeleteRoutine(routineID, userID)
+		
+		if err != nil {
+			if err == sql.ErrNoRows {
+				http.Error(w, "Routine not found or unauthorized", http.StatusNotFound)
+				return
+			}
+			http.Error(w, "Error deleting routine", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Routine successfully deleted!"})
+	}
+}

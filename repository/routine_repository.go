@@ -93,3 +93,24 @@ func (r *RoutineRepository) AddExerciseToRoutine(routineID int, exerciseID int, 
 	_, err := r.DB.Exec(query, routineID, exerciseID, order)
 	return err
 }
+
+// DeleteRoutine removes a routine from the database. 
+func (r *RoutineRepository) DeleteRoutine(routineID int, userID int) error {
+	query := `DELETE FROM routines WHERE id = $1 AND user_id = $2`
+	
+	result, err := r.DB.Exec(query, routineID, userID)
+	if err != nil {
+		return err
+	}
+	
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	
+	if rowsAffected == 0 {
+		return sql.ErrNoRows 
+	}
+	
+	return nil
+}
