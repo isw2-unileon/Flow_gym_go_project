@@ -728,6 +728,7 @@ setInterval(loadMachines, 1000);
 // ==========================================
 const navDashboard = document.getElementById('nav-dashboard');
 const navRoutines = document.getElementById('nav-routines');
+const navMachines = document.getElementById('nav-machines');
 
 
 // sections of the Dashboard
@@ -737,14 +738,16 @@ const dashGymSection = document.getElementById('dash-gym-section');
 
 // Routines view
 const routinesView = document.getElementById('routines-view');
+const machinesView = document.getElementById('machines-view');
 
-if (navRoutines && navDashboard) {
+if (navRoutines && navDashboard && navMachines) {
 
     navRoutines.addEventListener('click', (e) => {
 
         e.preventDefault();
 
         navDashboard.classList.remove('active');
+        navMachines.classList.remove('active');
 
         navRoutines.classList.add('active');
 
@@ -752,7 +755,27 @@ if (navRoutines && navDashboard) {
         dashTopGrid.style.display = 'none';
         dashGymSection.style.display = 'none';
 
+        machinesView.style.display = 'none';
+
         routinesView.style.display = 'block';
+    });
+
+    navMachines.addEventListener('click', (e) => {
+
+        e.preventDefault();
+
+        navDashboard.classList.remove('active');
+        navRoutines.classList.remove('active');
+
+        navMachines.classList.add('active');
+
+        dashHeader.style.display = 'none';
+        dashTopGrid.style.display = 'none';
+        dashGymSection.style.display = 'none';
+
+        routinesView.style.display = 'none';
+
+        machinesView.style.display = 'block';
     });
 
     navDashboard.addEventListener('click', (e) => {
@@ -760,10 +783,12 @@ if (navRoutines && navDashboard) {
         e.preventDefault();
 
         navRoutines.classList.remove('active');
+        navMachines.classList.remove('active');
 
         navDashboard.classList.add('active');
 
         routinesView.style.display = 'none';
+        machinesView.style.display = 'none';
 
         dashHeader.style.display = '';
         dashTopGrid.style.display = '';

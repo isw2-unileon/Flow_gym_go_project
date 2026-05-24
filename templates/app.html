@@ -117,10 +117,12 @@
 
                     </div>
 
-                    <div id="routine-preview" style="display: none; margin-top: 15px; padding: 12px; background-color: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
+                    <div id="routine-preview"
+                        style="display: none; margin-top: 15px; padding: 12px; background-color: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0;">
                         <h4 style="margin: 0 0 8px 0; font-size: 0.9em; color: #475569;">Exercises in this routine:</h4>
-                        <ul id="routine-preview-list" style="margin: 0; padding-left: 20px; font-size: 0.85em; color: #334155; line-height: 1.5;">
-                            </ul>
+                        <ul id="routine-preview-list"
+                            style="margin: 0; padding-left: 20px; font-size: 0.85em; color: #334155; line-height: 1.5;">
+                        </ul>
                     </div>
 
                     <div id="routine-progress" class="routine-progress" style="display: none;">
@@ -322,24 +324,31 @@
                 </header>
 
                 <section class="dashboard-top-grid">
-            
+
                     <div class="routine-panel">
                         <h2>Create New Routine</h2>
-                
-                        <form id="create-routine-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+
+                        <form id="create-routine-form"
+                            style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
                             <div>
-                                <label for="new-routine-name" style="font-weight: bold; display: block; margin-bottom: 5px;">Routine Name</label>
-                                <input type="text" id="new-routine-name" required placeholder="e.g., Upper Body Power" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                <label for="new-routine-name"
+                                    style="font-weight: bold; display: block; margin-bottom: 5px;">Routine Name</label>
+                                <input type="text" id="new-routine-name" required placeholder="e.g., Upper Body Power"
+                                    style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
                             </div>
 
                             <div>
-                                <label for="new-routine-exercises" style="font-weight: bold; display: block; margin-bottom: 5px;">Select Exercises (Hold Ctrl/Cmd to select multiple)</label>
-                                <select id="new-routine-exercises" multiple required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; height: 150px;">
+                                <label for="new-routine-exercises"
+                                    style="font-weight: bold; display: block; margin-bottom: 5px;">Select Exercises
+                                    (Hold Ctrl/Cmd to select multiple)</label>
+                                <select id="new-routine-exercises" multiple required
+                                    style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; height: 150px;">
                                     <option value="" disabled>Loading exercises...</option>
                                 </select>
                             </div>
 
-                            <button type="submit" style="padding: 12px 20px; background-color: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: fit-content;">
+                            <button type="submit"
+                                style="padding: 12px 20px; background-color: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: fit-content;">
                                 Save Routine
                             </button>
                         </form>
@@ -347,17 +356,22 @@
 
                     <div class="routine-panel">
                         <h2>Delete Existing Routine</h2>
-                        <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Select a routine you no longer need. This action cannot be undone.</p>
-                
+                        <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Select a routine you no longer need.
+                            This action cannot be undone.</p>
+
                         <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
                             <div>
-                                <label for="delete-routine-select" style="font-weight: bold; display: block; margin-bottom: 5px;">Select Routine</label>
-                                <select id="delete-routine-select" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                <label for="delete-routine-select"
+                                    style="font-weight: bold; display: block; margin-bottom: 5px;">Select
+                                    Routine</label>
+                                <select id="delete-routine-select"
+                                    style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
                                     <option value="">Select a routine to delete</option>
                                 </select>
                             </div>
-                    
-                            <button id="delete-routine-btn" disabled style="padding: 12px 20px; background-color: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: fit-content;">
+
+                            <button id="delete-routine-btn" disabled
+                                style="padding: 12px 20px; background-color: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: fit-content;">
                                 Delete Routine
                             </button>
                         </div>
@@ -365,29 +379,41 @@
 
                     <div class="routine-panel" style="grid-column: span 2;">
                         <h2>Edit Existing Routine</h2>
-                        <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Select a routine to load its current data, make your changes, and save.</p>
-                
-                        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px; max-width: 400px;">
+                        <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Select a routine to load its current
+                            data, make your changes, and save.</p>
+
+                        <div
+                            style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px; max-width: 400px;">
                             <div>
-                                <label for="edit-routine-select" style="font-weight: bold; display: block; margin-bottom: 5px;">Select Routine to Edit</label>
-                                <select id="edit-routine-select" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                <label for="edit-routine-select"
+                                    style="font-weight: bold; display: block; margin-bottom: 5px;">Select Routine to
+                                    Edit</label>
+                                <select id="edit-routine-select"
+                                    style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
                                     <option value="">Select a routine...</option>
                                 </select>
                             </div>
 
                             <form id="edit-routine-form" style="display: none; flex-direction: column; gap: 15px;">
                                 <div>
-                                    <label for="edit-routine-name" style="font-weight: bold; display: block; margin-bottom: 5px;">Modify Name</label>
-                                    <input type="text" id="edit-routine-name" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                    <label for="edit-routine-name"
+                                        style="font-weight: bold; display: block; margin-bottom: 5px;">Modify
+                                        Name</label>
+                                    <input type="text" id="edit-routine-name" required
+                                        style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
                                 </div>
 
                                 <div>
-                                    <label for="edit-routine-exercises" style="font-weight: bold; display: block; margin-bottom: 5px;">Modify Exercises (Hold Ctrl/Cmd to select multiple)</label>
-                                    <select id="edit-routine-exercises" multiple required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; height: 150px;">
-                                        </select>
+                                    <label for="edit-routine-exercises"
+                                        style="font-weight: bold; display: block; margin-bottom: 5px;">Modify Exercises
+                                        (Hold Ctrl/Cmd to select multiple)</label>
+                                    <select id="edit-routine-exercises" multiple required
+                                        style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; height: 150px;">
+                                    </select>
                                 </div>
 
-                                <button type="submit" style="padding: 12px 20px; background-color: #16a34a; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: fit-content;">
+                                <button type="submit"
+                                    style="padding: 12px 20px; background-color: #16a34a; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: fit-content;">
                                     Save Changes
                                 </button>
                             </form>
@@ -395,6 +421,44 @@
                     </div>
 
                 </section>
+            </div>
+            <div id="machines-view" style="display: none; width: 100%;">
+
+                <header class="dashboard-header">
+                    <h1>Machines & Exercises</h1>
+                    <p>
+                        Explore gym machines, recommended exercises, and usage tips.
+                    </p>
+                </header>
+
+                <section class="machines-grid">
+
+                    <div class="machine-info-card">
+                        <img src="/static/images/bench.jpg" alt="Bench Press">
+                        <h2>Bench Press</h2>
+                        <p>
+                            Great for chest, shoulders, and triceps development.
+                        </p>
+                    </div>
+
+                    <div class="machine-info-card">
+                        <img src="/static/images/treadmill.jpg" alt="Treadmill">
+                        <h2>Treadmill</h2>
+                        <p>
+                            Perfect for cardio, endurance, and calorie burning.
+                        </p>
+                    </div>
+
+                    <div class="machine-info-card">
+                        <img src="/static/images/latpulldown.jpg" alt="Lat Pulldown">
+                        <h2>Lat Pulldown</h2>
+                        <p>
+                            Targets the back muscles and improves upper-body strength.
+                        </p>
+                    </div>
+
+                </section>
+
             </div>
 
         </main>
