@@ -263,7 +263,6 @@ button:hover {
     color: #334155;
 }
 
-/* POSICIONES */
 .machine-slot[data-machine-name="Bench"] {
     top: 35px;
     left: 30px;
@@ -310,10 +309,6 @@ button:hover {
     transform: translateX(-50%);
 }
 
-.machine-slot[data-machine-name="Treadmill"]:hover {
-    transform: translateX(-50%) scale(1.03);
-}
-
 .machine-slot[data-machine-name="Leg Press Machine"] {
     bottom: 30px;
     left: 50px;
@@ -323,10 +318,6 @@ button:hover {
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-}
-
-.machine-slot[data-machine-name="Dumbbells"]:hover {
-    transform: translateX(-50%) scale(1.03);
 }
 
 .machine-slot[data-machine-name="Shoulder Press Machine"] {
@@ -393,12 +384,6 @@ button:hover {
     width: 320px;
 }
 
-@media (max-width: 900px) {
-    .machine-summary {
-        grid-template-columns: 1fr;
-    }
-}
-
 .logout-button {
     margin-top: 16px;
     padding: 10px 18px;
@@ -441,10 +426,6 @@ button:hover {
     color: #b45309;
     text-align: center;
 }
-
-/* =========================
-   MODERN LOGIN PAGE
-========================= */
 
 .login-layout {
     min-height: 100vh;
@@ -605,10 +586,6 @@ button:hover {
     }
 }
 
-/* =========================
-   REGISTER PAGE
-========================= */
-
 .register-layout {
     min-height: 100vh;
     display: grid;
@@ -718,10 +695,6 @@ button:hover {
     text-decoration: none;
     font-weight: 700;
 }
-
-/* =========================
-   LANDING PAGE
-========================= */
 
 .landing-wrapper {
     min-height: 100vh;
@@ -848,10 +821,6 @@ button:hover {
 .preview-status.occupied {
     background: #ef4444;
 }
-
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media (max-width: 1100px) {
 
