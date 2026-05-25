@@ -53,6 +53,7 @@
 
 .dashboard-main {
     padding: 40px;
+    overflow-x: hidden;
 }
 
 .dashboard-header {
@@ -236,6 +237,8 @@
 
 .nav-item {
     padding: 14px 18px;
+    width: 100%;
+    box-sizing: border-box;
     border-radius: 14px;
     text-decoration: none;
     color: #475569;
@@ -717,7 +720,7 @@ select:focus {
     background: #eff6ff;
     color: #1d4ed8;
 
-    transform: translateX(6px);
+    transform: translateX(4px);
 
     box-shadow:
         0 10px 22px rgba(37, 99, 235, 0.12);
@@ -798,8 +801,10 @@ select:focus {
     }
 
     .sidebar-navigation {
-        flex-direction: row;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+        width: 100%;
     }
 
     .dashboard-main {
@@ -815,7 +820,7 @@ select:focus {
     }
 
     .summary-card {
-        padding: 24px;
+        padding: 20px;
     }
 
     .gym-map {
@@ -826,7 +831,7 @@ select:focus {
 @media (max-width: 700px) {
 
     .dashboard-main {
-        padding: 20px;
+        padding: 16px;
     }
 
     .dashboard-sidebar {
@@ -838,7 +843,7 @@ select:focus {
     }
 
     .dashboard-header h1 {
-        font-size: 36px;
+        font-size: 32px;
         line-height: 1.15;
     }
 
@@ -899,7 +904,7 @@ select:focus {
 
     .machine-slot {
         width: 100%;
-        max-width: 260px;
+        max-width: 240px;
         left: 50% !important;
         right: auto !important;
         transform: translateX(-50%) !important;
