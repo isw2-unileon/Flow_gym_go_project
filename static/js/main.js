@@ -553,7 +553,8 @@ async function loadRoutines(userId) {
         const response = await fetch(`/routines?userId=${userId}`);
         if (!response.ok) return;
 
-        allRoutines = await response.json();
+        const data = await response.json();
+        allRoutines = data || [];
 
         routineSelect.innerHTML = '<option value="">Select a Routine</option>';
 
