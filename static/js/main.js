@@ -24,6 +24,30 @@ let currentExerciseIndex = 0;
 let userOccupiedMachineId = null;
 
 /* =========================
+   TOAST NOTIFICATIONS
+========================= */
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) {
+        console.error("No se encontró el toast-container en el HTML");
+        return;
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        toast.addEventListener('animationend', () => {
+            toast.remove();
+        });
+    }, 3500);
+}
+
+/* =========================
    RECOMMENDATION FORM
 ========================= */
 
