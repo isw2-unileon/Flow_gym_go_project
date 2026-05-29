@@ -917,3 +917,60 @@ button:hover {
     line-height: 1.7;
     color: #475569;
 }
+
+/* =========================================
+   TOAST NOTIFICATIONS (MOBILE FRIENDLY)
+========================================= */
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    min-width: 250px;
+    padding: 16px 24px;
+    color: #fff;
+    border-radius: 14px; 
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.2); 
+    font-size: 15px;
+    font-weight: 600; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; 
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+.toast.success { background-color: #22c55e; } 
+.toast.error { background-color: #ef4444; }   
+.toast.warning { background-color: #f59e0b; color: #fff; }
+
+.toast.fade-out {
+    animation: fadeOutRight 0.3s ease forwards;
+}
+
+@keyframes slideInRight {
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeOutRight {
+    to { opacity: 0; transform: translateX(100%); }
+}
+
+/* Adaptación para pantallas de móvil */
+@media (max-width: 600px) {
+    .toast-container {
+        left: 20px;
+        right: 20px;
+        align-items: center;
+    }
+    .toast {
+        width: 100%;
+        min-width: 0;
+    }
+}

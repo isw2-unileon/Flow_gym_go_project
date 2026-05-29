@@ -646,9 +646,7 @@ startRoutineBtn.addEventListener("click", () => {
         selectedRoutine.exercises.length === 0
     ) {
 
-        alert(
-            "This routine has no exercises assigned yet."
-        );
+        showToast("This routine has no exercises assigned yet.", "warning");
 
         return;
     }
@@ -686,7 +684,7 @@ nextExerciseBtn.addEventListener("click", () => {
 
         routineProgressDiv.style.display = "none";
 
-        alert("Routine Finished! Great Job!");
+        showToast("Routine Finished! Great Job!", "success");
 
         currentRoutine = [];
     }
@@ -811,20 +809,20 @@ if (createRoutineForm) {
         // --- (VALIDATIONS) ---
 
         if (!nameInput) {
-            alert("⚠️ Routine name cannot be empty.");
+            showToast("Routine name cannot be empty.", "warning");
             return;
         }
 
         const nameExists = allRoutines.some(r => r.name.toLowerCase() === nameInput.toLowerCase());
         if (nameExists) {
-            alert("⚠️ You already have a routine with this name. Please choose a different one.");
+            showToast("You already have a routine with this name. Please choose a different one.", "warning");
             return;
         }
 
         const selectedExerciseIds = Array.from(selectExercises.selectedOptions).map(option => parseInt(option.value));
 
         if (selectedExerciseIds.length === 0) {
-            alert("⚠️ Please select at least one exercise to create a routine.");
+            showToast("Please select at least one exercise to create a routine.", "warning");
             return;
         }
 
@@ -844,14 +842,14 @@ if (createRoutineForm) {
             });
 
             if (response.ok) {
-                alert("✅ Routine created successfully!");
+                showToast("Routine created successfully!", "success");
                 createRoutineForm.reset();
                 loadRoutines(userId);
 
                 const navDashboard = document.getElementById('nav-dashboard');
                 if (navDashboard) navDashboard.click();
             } else {
-                alert("❌ Error creating routine.");
+                showToast("Error creating routine.", "error");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -885,13 +883,13 @@ if (deleteRoutineSelect && deleteRoutineBtn) {
             });
 
             if (response.ok) {
-                alert("Routine deleted successfully!");
+                showToast("Routine deleted successfully!", "success");
 
                 loadRoutines(userId);
 
                 deleteRoutineBtn.disabled = true;
             } else {
-                alert("Error deleting routine. You might not be authorized.");
+                showToast("Error deleting routine. You might not be authorized.", "error");
             }
         } catch (error) {
             console.error("Error deleting routine:", error);
@@ -943,18 +941,18 @@ if (editRoutineSelect && editRoutineForm) {
         // --- (VALIDATIONS) ---
 
         if (!nameInput) {
-            alert("⚠️ Routine name cannot be empty.");
+            showToast("Routine name cannot be empty.", "warning");
             return;
         }
 
         const nameExists = allRoutines.some(r => r.name.toLowerCase() === nameInput.toLowerCase() && r.id !== routineId);
         if (nameExists) {
-            alert("⚠️ Another routine already uses this name. Please choose a different one.");
+            showToast("Another routine already uses this name. Please choose a different one.", "warning");
             return;
         }
 
         if (selectedExerciseIds.length === 0) {
-            alert("⚠️ Please select at least one exercise.");
+            showToast("Please select at least one exercise.", "warning");
             return;
         }
 
@@ -975,7 +973,7 @@ if (editRoutineSelect && editRoutineForm) {
             });
 
             if (response.ok) {
-                alert("✅ Routine updated successfully!");
+                showToast("Routine updated successfully!", "success");
                 editRoutineForm.reset();
                 editRoutineForm.style.display = "none";
                 editRoutineSelect.value = "";
@@ -985,7 +983,7 @@ if (editRoutineSelect && editRoutineForm) {
                 const navDashboard = document.getElementById('nav-dashboard');
                 if (navDashboard) navDashboard.click();
             } else {
-                alert("❌ Error updating routine.");
+                showToast("Error updating routine.", "error");
             }
         } catch (error) {
             console.error("Error updating routine:", error);
