@@ -713,7 +713,6 @@ function updateRoutineUI() {
    INITIAL LOAD
 ========================= */
 
-loadRoutines();
 
 loadMachines();
 
