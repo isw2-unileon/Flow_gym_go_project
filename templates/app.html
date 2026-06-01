@@ -509,7 +509,19 @@
                 </section>
 
             </div>
-            <div id="toast-container" class="toast-container"></div>    
+
+            <div id="toast-container" class="toast-container"></div>
+            
+            <div id="custom-confirm-overlay" class="confirm-overlay hidden">
+                <div class="confirm-modal">
+                    <h3 class="confirm-title">Confirm Action</h3>
+                    <p id="confirm-message" class="confirm-message">Are you sure?</p>
+                    <div class="confirm-actions">
+                        <button id="confirm-cancel-btn" class="confirm-btn cancel-btn">Cancel</button>
+                        <button id="confirm-ok-btn" class="confirm-btn delete-btn">Delete</button>
+                    </div>
+                </div>
+            </div>
         </main>
 
     </div>

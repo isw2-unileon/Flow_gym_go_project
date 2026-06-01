@@ -47,6 +47,38 @@ function showToast(message, type = 'success') {
     }, 3500);
 }
 
+function showConfirmModal(message, title = "Confirm Action") {
+    return new Promise((resolve) => {
+        const overlay = document.getElementById('custom-confirm-overlay');
+        if (!overlay) {
+            console.error("No se encontró el overlay del modal en HTML");
+            return resolve(false);
+        }
+
+        const titleEl = overlay.querySelector('.confirm-title');
+        const messageEl = document.getElementById('confirm-message');
+        const cancelBtn = document.getElementById('confirm-cancel-btn');
+        const okBtn = document.getElementById('confirm-ok-btn');
+
+        titleEl.textContent = title;
+        messageEl.textContent = message;
+
+        overlay.classList.remove('hidden');
+
+        const cleanup = () => {
+            overlay.classList.add('hidden');
+            cancelBtn.removeEventListener('click', onCancel);
+            okBtn.removeEventListener('click', onOk);
+        };
+
+        const onCancel = () => { cleanup(); resolve(false); };
+        const onOk = () => { cleanup(); resolve(true); };
+
+        cancelBtn.addEventListener('click', onCancel);
+        okBtn.addEventListener('click', onOk);
+    });
+}
+
 /* =========================
    RECOMMENDATION FORM
 ========================= */
@@ -896,8 +928,10 @@ if (deleteRoutineSelect && deleteRoutineBtn) {
         const selectedRoutineId = parseInt(deleteRoutineSelect.value);
         if (!selectedRoutineId) return;
 
-        const confirmDelete = confirm("Are you sure you want to delete this routine? This action cannot be undone.");
-        if (!confirmDelete) return;
+        const userConfirmed = await showConfirmModal("Are you sure you want to delete this routine?", "Delete Routine");
+        if (!userConfirmed) {
+            return;
+        }
 
         const userId = window.loggedInUserId || 1;
 
