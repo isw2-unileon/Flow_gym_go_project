@@ -480,11 +480,11 @@ async function loadExercises() {
         const response = await fetch("/exercises");
         const exercises = await response.json();
 
-        exerciseOptions.innerHTML = "";
+        if (exerciseOptions) exerciseOptions.innerHTML = "";
 
-        const newRoutineExercisesSelect = document.getElementById("new-routine-exercises");
-        if (newRoutineExercisesSelect) {
-            newRoutineExercisesSelect.innerHTML = "";
+        const newRoutineExerciseDropdown = document.getElementById("new-routine-exercise-dropdown");
+        if (newRoutineExerciseDropdown) {
+            newRoutineExerciseDropdown.innerHTML = '<option value="" selected disabled>Choose an exercise...</option>';
         }
 
         const editRoutineExercisesSelect = document.getElementById("edit-routine-exercises");
@@ -493,15 +493,17 @@ async function loadExercises() {
         }
 
         exercises.forEach(exercise => {
-            const datalistOption = document.createElement("option");
-            datalistOption.value = exercise.name;
-            exerciseOptions.appendChild(datalistOption);
+            if (exerciseOptions) {
+                const datalistOption = document.createElement("option");
+                datalistOption.value = exercise.name;
+                exerciseOptions.appendChild(datalistOption);
+            }
 
-            if (newRoutineExercisesSelect) {
+            if (newRoutineExerciseDropdown) {
                 const selectOption = document.createElement("option");
                 selectOption.value = exercise.id;
                 selectOption.textContent = exercise.name;
-                newRoutineExercisesSelect.appendChild(selectOption);
+                newRoutineExerciseDropdown.appendChild(selectOption);
             }
 
             if (editRoutineExercisesSelect) {
@@ -851,6 +853,50 @@ if (navRoutines && navDashboard && navMachines) {
 }
 
 // ==========================================
+// --- LOGIC OF THE TOUCH SELECTOR (CREATE) ---
+// ==========================================
+const btnAddExercise = document.getElementById('btn-add-exercise');
+const exerciseDropdown = document.getElementById('new-routine-exercise-dropdown');
+const selectedExercisesList = document.getElementById('selected-exercises-list');
+
+if (btnAddExercise && exerciseDropdown && selectedExercisesList) {
+    btnAddExercise.addEventListener('click', () => {
+        const selectedOption = exerciseDropdown.options[exerciseDropdown.selectedIndex];
+        if (!selectedOption.value || selectedOption.disabled) return;
+
+        const exerciseId = selectedOption.value;
+        const exerciseName = selectedOption.textContent;
+
+        const li = document.createElement('li');
+        li.className = 'exercise-list-item';
+        li.dataset.id = exerciseId; 
+
+        li.innerHTML = `
+            <span>${exerciseName}</span>
+            <div class="exercise-actions">
+                <button type="button" class="exercise-action-btn btn-up" title="Move Up">⬆️</button>
+                <button type="button" class="exercise-action-btn btn-down" title="Move Down">⬇️</button>
+                <button type="button" class="exercise-action-btn btn-remove" title="Remove">❌</button>
+            </div>
+        `;
+
+        li.querySelector('.btn-remove').addEventListener('click', () => li.remove());
+        
+        li.querySelector('.btn-up').addEventListener('click', () => {
+            const prev = li.previousElementSibling;
+            if (prev) li.parentNode.insertBefore(li, prev);
+        });
+
+        li.querySelector('.btn-down').addEventListener('click', () => {
+            const next = li.nextElementSibling;
+            if (next) li.parentNode.insertBefore(next, li);
+        });
+
+        selectedExercisesList.appendChild(li);
+        exerciseDropdown.selectedIndex = 0; 
+    });
+}
+// ==========================================
 // --- SUBMIT THE NEW ROUTINE FORM ---
 // ==========================================
 const createRoutineForm = document.getElementById('create-routine-form');
@@ -860,7 +906,6 @@ if (createRoutineForm) {
         e.preventDefault();
 
         const nameInput = document.getElementById('new-routine-name').value.trim();
-        const selectExercises = document.getElementById('new-routine-exercises');
 
         // --- (VALIDATIONS) ---
 
@@ -875,7 +920,8 @@ if (createRoutineForm) {
             return;
         }
 
-        const selectedExerciseIds = Array.from(selectExercises.selectedOptions).map(option => parseInt(option.value));
+        const listItems = document.querySelectorAll('#selected-exercises-list .exercise-list-item');
+        const selectedExerciseIds = Array.from(listItems).map(li => parseInt(li.dataset.id));
 
         if (selectedExerciseIds.length === 0) {
             showToast("Please select at least one exercise to create a routine.", "warning");
@@ -900,6 +946,7 @@ if (createRoutineForm) {
             if (response.ok) {
                 showToast("Routine created successfully!", "success");
                 createRoutineForm.reset();
+                document.getElementById('selected-exercises-list').innerHTML = '';
                 loadRoutines(userId);
 
                 const navDashboard = document.getElementById('nav-dashboard');

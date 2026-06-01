@@ -1066,3 +1066,46 @@ button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(239, 68, 68, 0.25);
 }
+
+/* =========================================
+   MOBILE EXERCISE LIST
+========================================= */
+.exercise-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 10px 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.exercise-list-item span {
+    font-weight: 600;
+    color: #334155;
+    flex: 1;
+}
+
+.exercise-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.exercise-action-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-up, .btn-down { background: #e2e8f0; color: #475569; }
+.btn-up:hover, .btn-down:hover { background: #cbd5e1; }
+.btn-remove { background: #fee2e2; color: #ef4444; }
+.btn-remove:hover { background: #fca5a5; }
