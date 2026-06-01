@@ -19,6 +19,7 @@ const routinePreview = document.getElementById("routine-preview");
 const routinePreviewList = document.getElementById("routine-preview-list");
 
 let allRoutines = [];
+let globalExercises = [];
 let currentRoutine = [];
 let currentExerciseIndex = 0;
 let userOccupiedMachineId = null;
@@ -76,6 +77,20 @@ function showConfirmModal(message, title = "Confirm Action") {
 
         cancelBtn.addEventListener('click', onCancel);
         okBtn.addEventListener('click', onOk);
+    });
+}
+
+function populateExerciseDropdown(dropdownId, exercisesList) {
+    const dropdown = document.getElementById(dropdownId);
+    if (!dropdown) return;
+
+    dropdown.innerHTML = '<option value="" selected disabled>Choose an exercise...</option>';
+
+    exercisesList.forEach(ex => {
+        const option = document.createElement("option");
+        option.value = ex.id;
+        option.textContent = ex.name;
+        dropdown.appendChild(option);
     });
 }
 
@@ -434,9 +449,7 @@ machineSlots.forEach(slot => {
             return;
         }
 
-        /*
-            Prevent occupying multiple machines.
-        */
+        
         if (
             currentAvailability &&
             userOccupiedMachineId !== null &&
@@ -478,43 +491,49 @@ machineSlots.forEach(slot => {
 async function loadExercises() {
     try {
         const response = await fetch("/exercises");
-        const exercises = await response.json();
+        
+        globalExercises = await response.json();
 
-        if (exerciseOptions) exerciseOptions.innerHTML = "";
-
-        const newRoutineExerciseDropdown = document.getElementById("new-routine-exercise-dropdown");
-        if (newRoutineExerciseDropdown) {
-            newRoutineExerciseDropdown.innerHTML = '<option value="" selected disabled>Choose an exercise...</option>';
-        }
-
-        const editRoutineExerciseDropdown = document.getElementById("edit-routine-exercise-dropdown");
-        if (editRoutineExerciseDropdown) {
-            editRoutineExerciseDropdown.innerHTML = '<option value="" selected disabled>Choose an exercise...</option>';
-        }
-
-        exercises.forEach(exercise => {
-            if (exerciseOptions) {
+        if (exerciseOptions) {
+            exerciseOptions.innerHTML = "";
+            globalExercises.forEach(ex => {
                 const datalistOption = document.createElement("option");
-                datalistOption.value = exercise.name;
+                datalistOption.value = ex.name;
                 exerciseOptions.appendChild(datalistOption);
-            }
-            if (newRoutineExerciseDropdown) {
-                const selectOption = document.createElement("option");
-                selectOption.value = exercise.id;
-                selectOption.textContent = exercise.name;
-                newRoutineExerciseDropdown.appendChild(selectOption);
-            }
-            if (editRoutineExerciseDropdown) {
-                const selectOption = document.createElement("option");
-                selectOption.value = exercise.id;
-                selectOption.textContent = exercise.name;
-                editRoutineExerciseDropdown.appendChild(selectOption);
-            }
-        });
+            });
+        }
+
+        populateExerciseDropdown("new-routine-exercise-dropdown", globalExercises);
+        populateExerciseDropdown("edit-routine-exercise-dropdown", globalExercises);
 
     } catch (error) {
         console.error("Could not load exercises:", error);
     }
+}
+
+// ==========================================
+// --- LIVE SEARCH ---
+// ==========================================
+const searchCreateInput = document.getElementById('search-create-exercise');
+if (searchCreateInput) {
+    searchCreateInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredExercises = globalExercises.filter(ex => 
+            ex.name.toLowerCase().includes(searchTerm)
+        );
+        populateExerciseDropdown("new-routine-exercise-dropdown", filteredExercises);
+    });
+}
+
+const searchEditInput = document.getElementById('search-edit-exercise');
+if (searchEditInput) {
+    searchEditInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredExercises = globalExercises.filter(ex => 
+            ex.name.toLowerCase().includes(searchTerm)
+        );
+        populateExerciseDropdown("edit-routine-exercise-dropdown", filteredExercises);
+    });
 }
 
 /* =========================
