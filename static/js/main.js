@@ -487,9 +487,9 @@ async function loadExercises() {
             newRoutineExerciseDropdown.innerHTML = '<option value="" selected disabled>Choose an exercise...</option>';
         }
 
-        const editRoutineExercisesSelect = document.getElementById("edit-routine-exercises");
-        if (editRoutineExercisesSelect) {
-            editRoutineExercisesSelect.innerHTML = "";
+        const editRoutineExerciseDropdown = document.getElementById("edit-routine-exercise-dropdown");
+        if (editRoutineExerciseDropdown) {
+            editRoutineExerciseDropdown.innerHTML = '<option value="" selected disabled>Choose an exercise...</option>';
         }
 
         exercises.forEach(exercise => {
@@ -498,19 +498,17 @@ async function loadExercises() {
                 datalistOption.value = exercise.name;
                 exerciseOptions.appendChild(datalistOption);
             }
-
             if (newRoutineExerciseDropdown) {
                 const selectOption = document.createElement("option");
                 selectOption.value = exercise.id;
                 selectOption.textContent = exercise.name;
                 newRoutineExerciseDropdown.appendChild(selectOption);
             }
-
-            if (editRoutineExercisesSelect) {
+            if (editRoutineExerciseDropdown) {
                 const selectOption = document.createElement("option");
                 selectOption.value = exercise.id;
                 selectOption.textContent = exercise.name;
-                editRoutineExercisesSelect.appendChild(selectOption);
+                editRoutineExerciseDropdown.appendChild(selectOption);
             }
         });
 
@@ -1008,7 +1006,49 @@ if (deleteRoutineSelect && deleteRoutineBtn) {
 const editRoutineSelect = document.getElementById("edit-routine-select");
 const editRoutineForm = document.getElementById("edit-routine-form");
 const editRoutineNameInput = document.getElementById("edit-routine-name");
-const editRoutineExercisesSelect = document.getElementById("edit-routine-exercises");
+
+const btnAddEditExercise = document.getElementById('btn-add-edit-exercise');
+const editExerciseDropdown = document.getElementById('edit-routine-exercise-dropdown');
+const editSelectedExercisesList = document.getElementById('edit-selected-exercises-list');
+
+function addExerciseToEditList(exerciseId, exerciseName) {
+    const li = document.createElement('li');
+    li.className = 'exercise-list-item';
+    li.dataset.id = exerciseId; 
+
+    li.innerHTML = `
+        <span>${exerciseName}</span>
+        <div class="exercise-actions">
+            <button type="button" class="exercise-action-btn btn-up" title="Move Up">⬆️</button>
+            <button type="button" class="exercise-action-btn btn-down" title="Move Down">⬇️</button>
+            <button type="button" class="exercise-action-btn btn-remove" title="Remove">❌</button>
+        </div>
+    `;
+
+    li.querySelector('.btn-remove').addEventListener('click', () => li.remove());
+    
+    li.querySelector('.btn-up').addEventListener('click', () => {
+        const prev = li.previousElementSibling;
+        if (prev) li.parentNode.insertBefore(li, prev);
+    });
+
+    li.querySelector('.btn-down').addEventListener('click', () => {
+        const next = li.nextElementSibling;
+        if (next) li.parentNode.insertBefore(next, li);
+    });
+
+    editSelectedExercisesList.appendChild(li);
+}
+
+if (btnAddEditExercise && editExerciseDropdown && editSelectedExercisesList) {
+    btnAddEditExercise.addEventListener('click', () => {
+        const selectedOption = editExerciseDropdown.options[editExerciseDropdown.selectedIndex];
+        if (!selectedOption.value || selectedOption.disabled) return;
+
+        addExerciseToEditList(selectedOption.value, selectedOption.textContent);
+        editExerciseDropdown.selectedIndex = 0; 
+    });
+}
 
 if (editRoutineSelect && editRoutineForm) {
     editRoutineSelect.addEventListener("change", (e) => {
@@ -1024,12 +1064,14 @@ if (editRoutineSelect && editRoutineForm) {
 
         editRoutineNameInput.value = routineToEdit.name;
 
-        Array.from(editRoutineExercisesSelect.options).forEach(opt => opt.selected = false);
+        editSelectedExercisesList.innerHTML = '';
 
         if (routineToEdit.exercises) {
             routineToEdit.exercises.forEach(ex => {
-                const optionToSelect = Array.from(editRoutineExercisesSelect.options).find(opt => parseInt(opt.value) === ex.exercise_id);
-                if (optionToSelect) optionToSelect.selected = true;
+                const optionMatch = Array.from(editExerciseDropdown.options).find(opt => parseInt(opt.value) === ex.exercise_id);
+                const exName = optionMatch ? optionMatch.textContent : `Exercise ${ex.exercise_id}`;
+                
+                addExerciseToEditList(ex.exercise_id, exName);
             });
         }
 
@@ -1041,9 +1083,9 @@ if (editRoutineSelect && editRoutineForm) {
 
         const routineId = parseInt(editRoutineSelect.value);
         const nameInput = editRoutineNameInput.value.trim();
-        const selectedExerciseIds = Array.from(editRoutineExercisesSelect.selectedOptions).map(option => parseInt(option.value));
-
-        // --- (VALIDATIONS) ---
+        
+        const listItems = document.querySelectorAll('#edit-selected-exercises-list .exercise-list-item');
+        const selectedExerciseIds = Array.from(listItems).map(li => parseInt(li.dataset.id));
 
         if (!nameInput) {
             showToast("Routine name cannot be empty.", "warning");
@@ -1060,8 +1102,6 @@ if (editRoutineSelect && editRoutineForm) {
             showToast("Please select at least one exercise.", "warning");
             return;
         }
-
-        // --- END OF VALIDATIONS ---
 
         const userId = window.loggedInUserId || 1;
 
@@ -1080,6 +1120,7 @@ if (editRoutineSelect && editRoutineForm) {
             if (response.ok) {
                 showToast("Routine updated successfully!", "success");
                 editRoutineForm.reset();
+                editSelectedExercisesList.innerHTML = ''; 
                 editRoutineForm.style.display = "none";
                 editRoutineSelect.value = "";
 

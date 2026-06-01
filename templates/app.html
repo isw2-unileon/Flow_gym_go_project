@@ -411,13 +411,21 @@
                                 </div>
 
                                 <div>
-                                    <label for="edit-routine-exercises"
-                                        style="font-weight: bold; display: block; margin-bottom: 5px;">Modify Exercises
-                                        (Hold Ctrl/Cmd to select multiple)</label>
-                                    <select id="edit-routine-exercises" multiple required
-                                        style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; height: 150px;">
+                                <label style="font-weight: bold; display: block; margin-bottom: 5px;">Modify Exercises</label>
+                                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                    <select id="edit-routine-exercise-dropdown" 
+                                        style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                                        <option value="" selected disabled>Choose an exercise...</option>
                                     </select>
+                                    <button type="button" id="btn-add-edit-exercise" 
+                                        style="padding: 10px 15px; background-color: #0ea5e9; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                                        Add
+                                    </button>
                                 </div>
+                                
+                                <ul id="edit-selected-exercises-list" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px;">
+                                </ul>
+                            </div>
 
                                 <button type="submit"
                                     style="padding: 12px 20px; background-color: #16a34a; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: fit-content;">
