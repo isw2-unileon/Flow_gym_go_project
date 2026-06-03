@@ -258,8 +258,6 @@ async function loadMachines() {
 
                     slot.classList.add("occupied");
 
-                    userOccupiedMachineId = machine.id;
-
                     if (statusText) {
 
                         if (machine.occupied_until) {
@@ -385,10 +383,14 @@ async function toggleMachineAvailability(
 
         if (newAvailability) {
 
+            userOccupiedMachineId = Number(machineId);
+
             machineMessage.textContent =
                 "Machine successfully occupied.";
 
         } else {
+
+            userOccupiedMachineId = null;
 
             machineMessage.textContent =
                 "Machine successfully released.";
@@ -449,7 +451,7 @@ machineSlots.forEach(slot => {
             return;
         }
 
-        
+
         if (
             currentAvailability &&
             userOccupiedMachineId !== null &&
@@ -491,7 +493,7 @@ machineSlots.forEach(slot => {
 async function loadExercises() {
     try {
         const response = await fetch("/exercises");
-        
+
         globalExercises = await response.json();
 
         if (exerciseOptions) {
@@ -518,7 +520,7 @@ const searchCreateInput = document.getElementById('search-create-exercise');
 if (searchCreateInput) {
     searchCreateInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
-        const filteredExercises = globalExercises.filter(ex => 
+        const filteredExercises = globalExercises.filter(ex =>
             ex.name.toLowerCase().includes(searchTerm)
         );
         populateExerciseDropdown("new-routine-exercise-dropdown", filteredExercises);
@@ -529,7 +531,7 @@ const searchEditInput = document.getElementById('search-edit-exercise');
 if (searchEditInput) {
     searchEditInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
-        const filteredExercises = globalExercises.filter(ex => 
+        const filteredExercises = globalExercises.filter(ex =>
             ex.name.toLowerCase().includes(searchTerm)
         );
         populateExerciseDropdown("edit-routine-exercise-dropdown", filteredExercises);
@@ -886,7 +888,7 @@ if (btnAddExercise && exerciseDropdown && selectedExercisesList) {
 
         const li = document.createElement('li');
         li.className = 'exercise-list-item';
-        li.dataset.id = exerciseId; 
+        li.dataset.id = exerciseId;
 
         li.innerHTML = `
             <span>${exerciseName}</span>
@@ -898,7 +900,7 @@ if (btnAddExercise && exerciseDropdown && selectedExercisesList) {
         `;
 
         li.querySelector('.btn-remove').addEventListener('click', () => li.remove());
-        
+
         li.querySelector('.btn-up').addEventListener('click', () => {
             const prev = li.previousElementSibling;
             if (prev) li.parentNode.insertBefore(li, prev);
@@ -910,7 +912,7 @@ if (btnAddExercise && exerciseDropdown && selectedExercisesList) {
         });
 
         selectedExercisesList.appendChild(li);
-        exerciseDropdown.selectedIndex = 0; 
+        exerciseDropdown.selectedIndex = 0;
     });
 }
 // ==========================================
@@ -1033,7 +1035,7 @@ const editSelectedExercisesList = document.getElementById('edit-selected-exercis
 function addExerciseToEditList(exerciseId, exerciseName) {
     const li = document.createElement('li');
     li.className = 'exercise-list-item';
-    li.dataset.id = exerciseId; 
+    li.dataset.id = exerciseId;
 
     li.innerHTML = `
         <span>${exerciseName}</span>
@@ -1045,7 +1047,7 @@ function addExerciseToEditList(exerciseId, exerciseName) {
     `;
 
     li.querySelector('.btn-remove').addEventListener('click', () => li.remove());
-    
+
     li.querySelector('.btn-up').addEventListener('click', () => {
         const prev = li.previousElementSibling;
         if (prev) li.parentNode.insertBefore(li, prev);
@@ -1065,7 +1067,7 @@ if (btnAddEditExercise && editExerciseDropdown && editSelectedExercisesList) {
         if (!selectedOption.value || selectedOption.disabled) return;
 
         addExerciseToEditList(selectedOption.value, selectedOption.textContent);
-        editExerciseDropdown.selectedIndex = 0; 
+        editExerciseDropdown.selectedIndex = 0;
     });
 }
 
@@ -1089,7 +1091,7 @@ if (editRoutineSelect && editRoutineForm) {
             routineToEdit.exercises.forEach(ex => {
                 const optionMatch = Array.from(editExerciseDropdown.options).find(opt => parseInt(opt.value) === ex.exercise_id);
                 const exName = optionMatch ? optionMatch.textContent : `Exercise ${ex.exercise_id}`;
-                
+
                 addExerciseToEditList(ex.exercise_id, exName);
             });
         }
@@ -1102,7 +1104,7 @@ if (editRoutineSelect && editRoutineForm) {
 
         const routineId = parseInt(editRoutineSelect.value);
         const nameInput = editRoutineNameInput.value.trim();
-        
+
         const listItems = document.querySelectorAll('#edit-selected-exercises-list .exercise-list-item');
         const selectedExerciseIds = Array.from(listItems).map(li => parseInt(li.dataset.id));
 
@@ -1139,7 +1141,7 @@ if (editRoutineSelect && editRoutineForm) {
             if (response.ok) {
                 showToast("Routine updated successfully!", "success");
                 editRoutineForm.reset();
-                editSelectedExercisesList.innerHTML = ''; 
+                editSelectedExercisesList.innerHTML = '';
                 editRoutineForm.style.display = "none";
                 editRoutineSelect.value = "";
 
