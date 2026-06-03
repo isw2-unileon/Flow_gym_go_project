@@ -217,6 +217,8 @@ async function loadMachines() {
                 "No machines available";
         }
 
+        userOccupiedMachineId = null;
+
         machineSlots.forEach(slot => {
 
             slot.classList.remove(
@@ -257,6 +259,10 @@ async function loadMachines() {
                 } else {
 
                     slot.classList.add("occupied");
+
+                    if (userOccupiedMachineId === null) {
+                        userOccupiedMachineId = machine.id;
+                    }
 
                     if (statusText) {
 
@@ -381,7 +387,7 @@ async function toggleMachineAvailability(
 
         machineMessage.classList.add("success");
 
-        if (newAvailability) {
+        if (!newAvailability) {
 
             userOccupiedMachineId = Number(machineId);
 
