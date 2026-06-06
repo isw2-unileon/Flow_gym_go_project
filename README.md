@@ -123,6 +123,37 @@ Example body:
   "available": false
 }
 
+---
+
+## Testing
+
+To run the unit tests and check the code coverage:
+
+```bash
+go test -v -cover ./...
+```
+
+We have achieved 100% test coverage in our handlers, services, and repository layers using `sqlmock`.
+
+---
+
+## Contributing
+
+We follow a **Trunk Based Development** workflow. 
+
+1. Create a short-lived branch for your feature (`feature/task-name`).
+2. Commit your changes following conventional commits.
+3. Open a Pull Request against the `main` branch.
+4. Ensure the GitHub Actions CI pipeline (tests) passes before requesting a review.
+
+---
+
+## Technical Documentation
+
+Detailed information about the architecture, design decisions, and development methodology can be found in the [`/docs` directory](./docs/architecture_and_design.md).
+
+---
+
 # Project Structure
 
 ```
