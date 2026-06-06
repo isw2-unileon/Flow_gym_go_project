@@ -27,7 +27,7 @@ https://flow-gym-go-project.onrender.com
 
 To run the project locally you need:
 
-- Go 1.21+
+- Go 1.25.0
 - PostgreSQL or SQLite database
 - Git
 
@@ -50,7 +50,7 @@ Replace the values with your actual database configuration.
 
 Install dependencies and start the server:
 
-```
+```bash
 go mod download
 go run main.go
 ```
@@ -122,6 +122,7 @@ Example body:
   "id": 2,
   "available": false
 }
+```
 
 ---
 
@@ -156,7 +157,7 @@ Detailed information about the architecture, design decisions, and development m
 
 # Project Structure
 
-```
+```text
 Flow_gym_go_project/
 ├── README.md
 ├── main.go
@@ -226,7 +227,7 @@ The application follows a layered architecture:
 
 Example:
 
-```
+```text
 Requested exercise: Bench Press
 Target muscle: Chest
 Available equipment: Cable Machine
@@ -240,7 +241,6 @@ Recommendation: Cable Fly
 
 - AI-based exercise recommendation
 - Real-time machine availability tracking
-- User authentication system
 - Workout history and analytics
 - Mobile-friendly interface
 
