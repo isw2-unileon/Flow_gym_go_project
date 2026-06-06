@@ -6,15 +6,22 @@ import (
 	"Flow_gym_go_project/models"
 )
 
+// ExerciseRepository provides database access methods for exercises.
 type ExerciseRepository struct {
 	DB *sql.DB
 }
 
+// NewExerciseRepository creates a new ExerciseRepository instance.
 func NewExerciseRepository(db *sql.DB) *ExerciseRepository {
 	return &ExerciseRepository{DB: db}
 }
 
+// GetByName retrieves a single exercise by its name, including
+// the associated muscle group name.
 func (r *ExerciseRepository) GetByName(name string) (*models.Exercise, error) {
+
+	// Query that joins exercises with muscle groups in order
+	// to return additional muscle group information.
 	query := `
 		SELECT e.id, e.name, e.muscle_group_id, mg.name
 		FROM exercises e
@@ -23,6 +30,8 @@ func (r *ExerciseRepository) GetByName(name string) (*models.Exercise, error) {
 	`
 
 	var exercise models.Exercise
+
+	// Execute the query and map the result into the Exercise model.
 	err := r.DB.QueryRow(query, name).Scan(
 		&exercise.ID,
 		&exercise.Name,
@@ -36,7 +45,10 @@ func (r *ExerciseRepository) GetByName(name string) (*models.Exercise, error) {
 	return &exercise, nil
 }
 
+// GetAll retrieves every exercise stored in the database.
 func (r *ExerciseRepository) GetAll() ([]models.Exercise, error) {
+
+	// Query all exercises ordered by ID.
 	query := `
 		SELECT id, name, muscle_group_id
 		FROM exercises
@@ -51,8 +63,12 @@ func (r *ExerciseRepository) GetAll() ([]models.Exercise, error) {
 
 	var exercises []models.Exercise
 
+	// Iterate through all returned rows.
 	for rows.Next() {
+
 		var exercise models.Exercise
+
+		// Map each database row into an Exercise model.
 		err := rows.Scan(
 			&exercise.ID,
 			&exercise.Name,
@@ -62,13 +78,20 @@ func (r *ExerciseRepository) GetAll() ([]models.Exercise, error) {
 			return nil, err
 		}
 
+		// Add the exercise to the result slice.
 		exercises = append(exercises, exercise)
 	}
 
 	return exercises, nil
 }
 
+// GetAlternativesByMuscleGroup returns alternative exercises
+// that belong to the same muscle group while excluding
+// the originally requested exercise.
 func (r *ExerciseRepository) GetAlternativesByMuscleGroup(muscleGroupID int, excludedExerciseID int) ([]models.Exercise, error) {
+
+	// Query all exercises from the same muscle group except
+	// the one specified by excludedExerciseID.
 	query := `
 		SELECT e.id, e.name, e.muscle_group_id
 		FROM exercises e
@@ -85,8 +108,12 @@ func (r *ExerciseRepository) GetAlternativesByMuscleGroup(muscleGroupID int, exc
 
 	var exercises []models.Exercise
 
+	// Iterate through all matching exercises.
 	for rows.Next() {
+
 		var exercise models.Exercise
+
+		// Map the database row into an Exercise model.
 		err := rows.Scan(
 			&exercise.ID,
 			&exercise.Name,
@@ -96,6 +123,7 @@ func (r *ExerciseRepository) GetAlternativesByMuscleGroup(muscleGroupID int, exc
 			return nil, err
 		}
 
+		// Add the exercise to the alternatives list.
 		exercises = append(exercises, exercise)
 	}
 
